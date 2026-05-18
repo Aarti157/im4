@@ -5,13 +5,14 @@ document
     e.preventDefault();
 
     const email = document.getElementById("email").value.trim();
+    const name = document.getElementById("name").value.trim();
     const password = document.getElementById("password").value.trim();
 
     try {
       const response = await fetch("api/register.php", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({ email, password }),
+        body: new URLSearchParams({ email, password, name }),
       });
       const result = await response.json();
 

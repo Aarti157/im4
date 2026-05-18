@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check user in DB
     $stmt = $pdo->prepare("SELECT id, password FROM users WHERE email = :email");
     $stmt->execute([':email' => $email]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC); //assoziatives Array, Wertepaar mit Schlüssel id und gehashtes pw
 
     // Verify password
     if ($user && password_verify($password, $user['password'])) {
