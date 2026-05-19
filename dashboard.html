@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerichte & Bewertungen</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- Button -->
+    <button id="openModal">Neues Gericht erfassen</button>
+
+    <!-- Modal -->
+    <div id="gerichtModal" style="display:none;">
+      <div class="modal-overlay" id="modalOverlay"></div>
+      <div class="modal-box">
+        <h2>Neues Gericht erfassen</h2>
+        <form id="gerichtForm">
+
+          <label for="gerichtDatum">Datum *</label>
+          <input type="date" id="gerichtDatum" required />
+
+          <label for="gerichtName">Name Gericht *</label>
+          <input type="text" id="gerichtName" required />
+
+          <label for="gerichtDesc">Beschreibung</label>
+          <textarea id="gerichtDesc" maxlength="250" rows="4"></textarea>
+
+          <label>Spezielles:</label>
+          <div class="checkboxes">
+            <label><input type="checkbox" name="vegan" /> vg</label>
+            <label><input type="checkbox" name="vegetarisch" /> v</label>
+            <label><input type="checkbox" name="pescetarisch" /> p</label>
+            <label><input type="checkbox" name="glutenfrei" /> gf</label>
+            <label><input type="checkbox" name="laktosefrei" /> lf</label>
+            <label><input type="checkbox" name="zuckerfrei" /> zf</label>
+            <label><input type="checkbox" name="sojafrei" /> sf</label>
+          </div>
+
+          <button type="submit">Erfassen</button>
+        </form>
+      </div>
+    </div>  <!-- ← modal-box und gerichtModal geschlossen -->
+
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>

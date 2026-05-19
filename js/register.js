@@ -8,7 +8,7 @@ document
     const name = document.getElementById("name").value.trim();
     const password = document.getElementById("password").value.trim();
     const rollen_id = document.getElementById("rollen_id").value;
-const orga_id = document.getElementById("orga_id").value;
+    const orga_id = document.getElementById("orga_id").value;
 
     try {
       const response = await fetch("api/register.php", {
