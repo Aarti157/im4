@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $orga_id   = $_POST['orga_id'] ?? null;
 
     if (!$email || !$password || !$name) {
-        echo json_encode(["status" => "error", "message" => "Email and password are required"]);
+        echo json_encode(["status" => "error", "message" => "Name, email and password are required"]);
         exit;
     }
 
