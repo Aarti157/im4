@@ -3,12 +3,33 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gerichte & Bewertungen</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <!-- Button -->
-    <button id="openModal">Neues Gericht erfassen</button>
+
+    <header class="dashboard-header">
+      <div class="header-info">
+        <h1>Willkommen zurück, <span id="userName">…</span></h1>
+        <p id="userOrga" class="orga-label"></p>
+      </div>
+      <button id="logoutBtn">Logout</button>
+    </header>
+
+    <main class="dashboard-main">
+
+      <!-- Wochenübersicht -->
+      <section class="woche-section">
+        <h2>Menüplan diese Woche</h2>
+        <div id="wocheContainer" class="woche-grid">
+          <p>Lädt…</p>
+        </div>
+      </section>
+
+      <!-- Gericht erfassen -->
+      <button id="openModal" class="btn-primary">+ Neues Gericht erfassen</button>
+
+    </main>
 
     <!-- Modal -->
     <div id="gerichtModal" style="display:none;">
@@ -28,20 +49,21 @@
 
           <label>Spezielles:</label>
           <div class="checkboxes">
-            <label><input type="checkbox" name="vegan" /> vg</label>
-            <label><input type="checkbox" name="vegetarisch" /> v</label>
-            <label><input type="checkbox" name="pescetarisch" /> p</label>
-            <label><input type="checkbox" name="glutenfrei" /> gf</label>
-            <label><input type="checkbox" name="laktosefrei" /> lf</label>
-            <label><input type="checkbox" name="zuckerfrei" /> zf</label>
-            <label><input type="checkbox" name="sojafrei" /> sf</label>
+            <label><input type="checkbox" name="vegan" /> vg </label>
+            <label><input type="checkbox" name="vegetarisch" /> v </label>
+            <label><input type="checkbox" name="pescetarisch" /> p </label>
+            <label><input type="checkbox" name="glutenfrei" /> gf </label>
+            <label><input type="checkbox" name="laktosefrei" /> lf </label>
+            <label><input type="checkbox" name="zuckerfrei" /> zf </label>
+            <label><input type="checkbox" name="sojafrei" /> sf </label>
           </div>
 
-          <button type="submit">Erfassen</button>
+          <button type="submit" class="btn-primary">Erfassen</button>
         </form>
       </div>
-    </div>  <!-- ← modal-box und gerichtModal geschlossen -->
+    </div>
 
     <script src="js/dashboard.js"></script>
+    <script src="js/logout.js"></script>
   </body>
 </html>
