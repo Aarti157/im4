@@ -1,94 +1,459 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YumYum – Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream:       #F7ECCA;
+      --cream-dark:  #ede0b4;
+      --cream-alt:   #F3E3B7;
+      --sand:        #B7AD8F;
+      --sand-border: rgba(183,173,143,0.3);
+      --olive:       #60583F;
+      --pink:        #E984A4;
+      --pink-hover:  #d4608a;
+      --pink-light:  rgba(233,132,164,0.18);
+      --blue:        #7D8ECC;
+      --blue-light:  rgba(125,142,204,0.22);
+      --text:        #2e2a1e;
+      --text-muted:  #60583F;
+      --text-faint:  #B7AD8F;
+      --white-card:  #fdfaf2;
+      --radius-md: 10px; --radius-lg: 16px; --radius-xl: 24px; --radius-pill: 9999px;
+      --shadow-card: 0 2px 10px rgba(96,88,63,0.09);
+      --shadow-drawer: -8px 0 36px rgba(60,50,20,0.13);
+      --font-serif: 'Libre Baskerville', Georgia, serif;
+      --font-sans: 'Inter', system-ui, sans-serif;
+      --transition: 150ms cubic-bezier(0.16,1,0.3,1);
+    }
+    html { -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--font-sans); background: var(--cream); color: var(--text); min-height: 100dvh; }
 
+    /* ── NAV ── */
+    .nav {
+      background: var(--cream);
+      border-bottom: 1px solid var(--sand-border);
+      padding: 0.9rem 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 200;
+    }
+    .nav-logo img { height: 72px; width: auto; display: block; }
 
-    <header class="dashboard-header">
-      <div class="header-info">
-        <h1>Willkommen zurück, <span id="userName">…</span></h1>
-        <p id="userOrga" class="orga-label"></p>
-      </div>
-      <button id="logoutBtn">Logout</button>
-    </header>
+    /* ── HAMBURGER ── */
+    .hamburger {
+      background: none;
+      border: 1px solid var(--sand-border);
+      border-radius: var(--radius-md);
+      width: 40px; height: 40px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+      cursor: pointer;
+      transition: background var(--transition);
+      position: relative; z-index: 300;
+    }
+    .hamburger:hover { background: var(--cream-dark); }
+    .hamburger span {
+      display: block; width: 18px; height: 1.5px;
+      background: var(--olive); border-radius: 2px;
+      transition: transform 220ms ease, opacity 180ms ease;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
+    /* ── DRAWER BACKDROP ── */
+    .drawer-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(48,40,20,0.32);
+      backdrop-filter: blur(3px);
+      z-index: 240;
+      opacity: 0; pointer-events: none;
+      transition: opacity 240ms ease;
+    }
+    .drawer-backdrop.open { opacity: 1; pointer-events: all; }
 
-    <main class="dashboard-main">
+    /* ── DRAWER ── */
+    .nav-drawer {
+      position: fixed; top: 0; right: 0;
+      width: min(340px, 90vw); height: 100dvh;
+      background: var(--white-card);
+      border-left: 1px solid var(--sand-border);
+      box-shadow: var(--shadow-drawer);
+      z-index: 250;
+      transform: translateX(100%);
+      transition: transform 290ms cubic-bezier(0.16,1,0.3,1);
+      display: flex; flex-direction: column;
+      padding: 1.6rem;
+      overflow-y: auto;
+    }
+    .nav-drawer.open { transform: translateX(0); }
 
+    .drawer-top {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+    .drawer-brand { font-family: var(--font-serif); font-size: 1rem; font-weight: 700; color: var(--text); }
 
-      <!-- Wochenübersicht -->
-      <section class="woche-section">
-        <h2>Menüplan diese Woche</h2>
-        <div id="wocheContainer" class="woche-grid">
-          <p>Lädt…</p>
-        </div>
-      </section>
+    /* Eingeloggt-Info */
+    .drawer-user-card {
+      background: var(--cream);
+      border: 1px solid var(--sand-border);
+      border-radius: var(--radius-lg);
+      padding: 0.9rem 1rem;
+      margin-bottom: 1.4rem;
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .drawer-user-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--pink-light);
+      border: 1px solid rgba(233,132,164,0.35);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .drawer-user-name { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+    .drawer-user-orga { font-size: 0.72rem; color: var(--text-faint); }
 
+    .drawer-section { margin-bottom: 1.6rem; }
+    .drawer-section-label {
+      font-size: 0.67rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-faint);
+      margin-bottom: 0.6rem; padding-left: 0.1rem;
+    }
 
-      <!-- Gericht erfassen -->
-      <button id="openModal" class="btn-primary">+ Neues Gericht eintragen</button>
+    .drawer-divider { border: none; border-top: 1px solid var(--sand-border); margin: 0.6rem 0 1rem; }
 
+    /* Nav links */
+    .drawer-nav { display: flex; flex-direction: column; gap: 0.1rem; }
+    .drawer-link {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.65rem 0.8rem; border-radius: var(--radius-md);
+      text-decoration: none; font-size: 0.9rem; font-weight: 500; color: var(--text-muted);
+      transition: background var(--transition), color var(--transition);
+      border: none; background: none; cursor: pointer; width: 100%; text-align: left;
+      font-family: var(--font-sans);
+    }
+    .drawer-link:hover { background: var(--cream); color: var(--text); }
+    .drawer-link.active { background: var(--pink-light); color: var(--pink); font-weight: 600; }
+    .drawer-link.active:hover { background: rgba(233,132,164,0.28); }
+    .drawer-link-icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--sand); }
+    .drawer-link.active .drawer-link-icon { color: var(--pink); }
+    .drawer-link.logout { color: var(--olive); }
+    .drawer-link.logout:hover { background: var(--cream); color: var(--text); }
 
-    </main>
+    /* Support Card */
+    .support-card {
+      padding: 0.8rem 1rem;
+      border-radius: var(--radius-md);
+      background: var(--cream);
+      border: 1px solid var(--sand-border);
+    }
+    .support-card p { font-size: 0.72rem; color: var(--text-faint); margin-bottom: 0.3rem; }
+    .support-card a {
+      font-size: 0.85rem; font-weight: 600; color: var(--olive);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    .support-card a:hover { color: var(--pink); }
 
+    .drawer-footer { margin-top: auto; padding-top: 1.2rem; border-top: 1px solid var(--sand-border); font-size: 0.73rem; color: var(--text-faint); }
 
-    <!-- Modal -->
-    <div id="gerichtModal" style="display:none;">
-      <div class="modal-overlay" id="modalOverlay"></div>
-      <div class="modal-box">
-        <h2>Neues Gericht erfassen</h2>
-        <form id="gerichtForm">
+    /* ── LAYOUT ── */
+    .dashboard-wrap { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+    .page-title { font-family: var(--font-serif); font-size: clamp(1.6rem, 2.5vw, 2.2rem); font-weight: 700; color: var(--text); margin-bottom: 0.3rem; }
+    .page-sub { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 2.5rem; }
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; }
+    .section-title { font-family: var(--font-serif); font-size: 1.15rem; font-weight: 700; color: var(--text); }
 
+    /* ── WOCHENPLAN ── */
+    .woche-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      gap: 1rem; margin-bottom: 3rem;
+    }
+    .tag-karte {
+      background: var(--white-card); border: 1px solid var(--sand-border);
+      border-radius: var(--radius-xl); padding: 1.4rem 1.2rem 1.2rem;
+      cursor: pointer; transition: box-shadow 150ms, transform 130ms, border-color 150ms;
+      display: flex; flex-direction: column; gap: 0.6rem; min-height: 190px;
+    }
+    .tag-karte:hover { box-shadow: 0 4px 18px rgba(96,88,63,0.13); transform: translateY(-2px); border-color: var(--pink); }
+    .tag-karte.leer { cursor: default; }
+    .tag-karte.leer:hover { transform: none; box-shadow: none; border-color: var(--sand-border); }
+    .tag-header { display: flex; align-items: center; justify-content: space-between; }
+    .tag-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text-faint); }
+    .tag-datum { font-size: 0.68rem; color: var(--text-faint); }
+    .gericht-name { font-family: var(--font-serif); font-size: 0.92rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+    .gericht-desc { font-size: 0.76rem; color: var(--text-muted); line-height: 1.5; }
+    .gericht-badges { display: flex; gap: 0.3rem; flex-wrap: wrap; margin-top: auto; }
+    .gbadge { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.15rem 0.4rem; border-radius: 4px; background: rgba(125,142,204,0.15); color: var(--olive); }
+    .kein-gericht { font-size: 0.78rem; color: var(--text-faint); font-style: italic; margin: auto 0; }
+    .bewertung-bar { margin-top: auto; }
+    .bar-track { height: 5px; border-radius: 3px; background: rgba(183,173,143,0.2); display: flex; overflow: hidden; }
+    .bar-pink  { background: var(--pink); height: 100%; transition: width 400ms ease; }
+    .bar-blue  { background: var(--blue); height: 100%; transition: width 400ms ease; }
+    .bar-sand  { background: var(--sand); height: 100%; transition: width 400ms ease; }
+    .bar-labels { display: flex; justify-content: space-between; margin-top: 0.35rem; }
+    .bar-label { font-size: 0.65rem; color: var(--text-faint); }
 
-          <label for="gerichtDatum">Datum *</label>
+    /* ── GERICHTSERFASSUNG ── */
+    .erfassung-section { background: var(--cream-alt); border-radius: var(--radius-xl); padding: 2rem 2.2rem; }
+    .erfassung-title { font-family: var(--font-serif); font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 1.4rem; }
+    .erfassung-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .field-full { grid-column: 1 / -1; }
+    .field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .field label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-muted); }
+    .field input, .field textarea {
+      background: var(--white-card); border: 1.5px solid var(--sand-border);
+      border-radius: var(--radius-md); padding: 0.65rem 0.9rem;
+      font-family: var(--font-sans); font-size: 0.88rem; color: var(--text);
+      outline: none; transition: border-color 140ms; width: 100%;
+    }
+    .field input:focus, .field textarea:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba(233,132,164,0.15); }
+    .field textarea { resize: vertical; min-height: 80px; }
+    .badges-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .badge-check { display: none; }
+    .badge-check + label {
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+      padding: 0.3rem 0.65rem; border-radius: 7px; border: 1.5px solid var(--sand-border);
+      color: var(--text-muted); cursor: pointer; transition: all 140ms; background: var(--white-card);
+    }
+    .badge-check:checked + label { background: rgba(125,142,204,0.2); border-color: var(--blue); color: var(--olive); }
+    .btn-primary { background: var(--pink); color: var(--olive); border: none; border-radius: var(--radius-md); padding: 0.75rem 1.6rem; font-family: var(--font-sans); font-size: 0.92rem; font-weight: 600; cursor: pointer; transition: background var(--transition), transform 120ms ease; }
+    .btn-primary:hover { background: var(--pink-hover); transform: translateY(-1px); }
+    .btn-submit-row { display: flex; justify-content: flex-end; margin-top: 1.4rem; }
+
+    /* ── BEWERTUNGS-MODAL ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(48,40,20,0.4); backdrop-filter: blur(4px);
+      z-index: 400; align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--white-card); border-radius: var(--radius-xl);
+      padding: 2.2rem; width: 100%; max-width: 420px;
+      box-shadow: 0 8px 40px rgba(48,40,20,0.18); position: relative;
+    }
+    .modal-box h2 { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 1.4rem; }
+    .modal-close { position: absolute; top: 1.2rem; right: 1.2rem; background: none; border: none; cursor: pointer; color: var(--text-faint); font-size: 1.1rem; line-height: 1; padding: 0.2rem; }
+    .modal-close:hover { color: var(--text); }
+    .bew-scores { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.8rem; margin-bottom: 1rem; }
+    .bew-score-item { border-radius: var(--radius-lg); padding: 1rem 0.5rem; text-align: center; }
+    .bew-score-num { font-family: var(--font-serif); font-size: 1.8rem; font-weight: 700; }
+    .bew-score-label { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem; }
+    .bew-score-item.pink { background: rgba(233,132,164,0.15); }
+    .bew-score-item.pink .bew-score-num { color: var(--pink); }
+    .bew-score-item.blue { background: rgba(125,142,204,0.15); }
+    .bew-score-item.blue .bew-score-num { color: var(--blue); }
+    .bew-score-item.sand { background: rgba(183,173,143,0.2); }
+    .bew-score-item.sand .bew-score-num { color: var(--olive); }
+    .bew-total { font-size: 0.82rem; color: var(--text-muted); text-align: center; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) { .woche-grid { grid-template-columns: repeat(3,1fr); } }
+    @media (max-width: 640px) {
+      .woche-grid { grid-template-columns: 1fr 1fr; }
+      .erfassung-grid { grid-template-columns: 1fr; }
+      .field-full { grid-column: auto; }
+      .nav { padding: 0.8rem 1.2rem; }
+      .dashboard-wrap { padding: 1.5rem 1rem 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+
+<!-- DRAWER (eingeloggt) -->
+<aside class="nav-drawer" id="navDrawer" role="dialog" aria-modal="true" aria-label="Navigation">
+  <div class="drawer-top">
+    <span class="drawer-brand">YumYum</span>
+    <button class="hamburger open" id="drawerClose" aria-label="Menü schliessen">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- Nutzer-Info -->
+  <div class="drawer-user-card">
+    <div class="drawer-user-avatar">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--pink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </div>
+    <div>
+      <div class="drawer-user-name" id="drawerUserName">–</div>
+      <div class="drawer-user-orga" id="drawerUserOrga"></div>
+    </div>
+  </div>
+
+  <hr class="drawer-divider">
+
+  <!-- Navigation -->
+  <div class="drawer-section">
+    <p class="drawer-section-label">Navigation</p>
+    <nav class="drawer-nav">
+      <a href="dashboard.html" class="drawer-link active">
+        <svg class="drawer-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="kontakt.html" class="drawer-link">
+        <svg class="drawer-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Kontakt
+      </a>
+    </nav>
+  </div>
+
+  <hr class="drawer-divider">
+
+  <!-- Support -->
+  <div class="drawer-section">
+    <p class="drawer-section-label">Support</p>
+    <div class="support-card">
+      <p>Technischer Support</p>
+      <a href="mailto:support@yumyum.ch">support@yumyum.ch</a>
+    </div>
+  </div>
+
+  <hr class="drawer-divider">
+
+  <!-- Konto -->
+  <div class="drawer-section">
+    <p class="drawer-section-label">Konto</p>
+    <nav class="drawer-nav">
+      <button class="drawer-link logout" id="logoutBtn">
+        <svg class="drawer-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Abmelden
+      </button>
+    </nav>
+  </div>
+
+  <div class="drawer-footer">© 2026 YumYum · Mit Sorgfalt gemacht</div>
+</aside>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="img/logo_yumyum.png" alt="YumYum" />
+  </a>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navDrawer">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="dashboard-wrap">
+
+  <h1 class="page-title">Dashboard</h1>
+  <p class="page-sub">Willkommen zurück, <span id="userName">–</span><span id="userOrga"></span></p>
+
+  <!-- WOCHENPLAN -->
+  <div class="section-header">
+    <span class="section-title">Wochenplan</span>
+  </div>
+  <div id="wocheContainer" class="woche-grid">
+    <p style="color:var(--text-faint);font-size:.85rem;">Lädt…</p>
+  </div>
+
+  <!-- GERICHTSERFASSUNG -->
+  <div class="erfassung-section">
+    <div class="erfassung-title">Gericht erfassen</div>
+    <form id="gerichtForm">
+      <div class="erfassung-grid">
+        <div class="field">
+          <label for="gerichtDatum">Datum</label>
           <input type="date" id="gerichtDatum" required />
-
-
-          <label for="gerichtName">Name Gericht *</label>
-          <input type="text" id="gerichtName" required />
-
-
+        </div>
+        <div class="field">
+          <label for="gerichtName">Name des Gerichts</label>
+          <input type="text" id="gerichtName" placeholder="z.B. Pasta Napoli" required />
+        </div>
+        <div class="field field-full">
           <label for="gerichtDesc">Beschreibung</label>
-          <textarea id="gerichtDesc" maxlength="250" rows="4"></textarea>
-
-
-          <label>Spezielles:</label>
-          <div class="checkboxes">
-            <label><input type="checkbox" name="vegan" /> vg </label>
-            <label><input type="checkbox" name="vegetarisch" /> v </label>
-            <label><input type="checkbox" name="pescetarisch" /> p </label>
-            <label><input type="checkbox" name="glutenfrei" /> gf </label>
-            <label><input type="checkbox" name="laktosefrei" /> lf </label>
-            <label><input type="checkbox" name="zuckerfrei" /> zf </label>
-            <label><input type="checkbox" name="sojafrei" /> sf </label>
+          <textarea id="gerichtDesc" maxlength="250" placeholder="Kurze Beschreibung (optional)"></textarea>
+        </div>
+        <div class="field field-full">
+          <label>Spezielles</label>
+          <div class="badges-row">
+            <input type="checkbox" class="badge-check" id="cb-vg" name="vegan"><label for="cb-vg">Vegan</label>
+            <input type="checkbox" class="badge-check" id="cb-v"  name="vegetarisch"><label for="cb-v">Vegetarisch</label>
+            <input type="checkbox" class="badge-check" id="cb-p"  name="pescetarisch"><label for="cb-p">Pescetarisch</label>
+            <input type="checkbox" class="badge-check" id="cb-gf" name="glutenfrei"><label for="cb-gf">Glutenfrei</label>
+            <input type="checkbox" class="badge-check" id="cb-lf" name="laktosefrei"><label for="cb-lf">Laktosefrei</label>
+            <input type="checkbox" class="badge-check" id="cb-zf" name="zuckerfrei"><label for="cb-zf">Zuckerfrei</label>
+            <input type="checkbox" class="badge-check" id="cb-sf" name="sojafrei"><label for="cb-sf">Sojafrei</label>
           </div>
+        </div>
+      </div>
+      <div class="btn-submit-row">
+        <button type="submit" class="btn-primary">Gericht erfassen</button>
+      </div>
+    </form>
+  </div>
 
+</div>
 
-          <button type="submit" class="btn-primary">Erfassen</button>
-        </form>
+<!-- BEWERTUNGS-MODAL -->
+<div class="modal-overlay" id="bewertungModal">
+  <div class="modal-box">
+    <button class="modal-close" id="bewertungModalClose">✕</button>
+    <h2>Bewertungen — <span id="bewertungDatum"></span></h2>
+    <div class="bew-scores">
+      <div class="bew-score-item pink">
+        <div class="bew-score-num" id="bewertungGood">–</div>
+        <div class="bew-score-label">😊 Yum</div>
+      </div>
+      <div class="bew-score-item blue">
+        <div class="bew-score-num" id="bewertungNeutral">–</div>
+        <div class="bew-score-label">😐 Naja</div>
+      </div>
+      <div class="bew-score-item sand">
+        <div class="bew-score-num" id="bewertungBad">–</div>
+        <div class="bew-score-label">😕 Nicht Yum</div>
       </div>
     </div>
-
-
-    <!-- Bewertungs-Modal -->
-<div id="bewertungModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1000; display:none; align-items:center; justify-content:center;">
-  <div style="background:#fff; padding:2rem; border-radius:12px; min-width:300px; text-align:center;">
-    <h2>Bewertungen vom <span id="bewertungDatum"></span></h2>
-    <p>✅ Gut: <strong id="bewertungGood"></strong></p>
-    <p>😐 Neutral: <strong id="bewertungNeutral"></strong></p>
-    <p>❌ Schlecht: <strong id="bewertungBad"></strong></p>
-    <p>Gesamt: <strong id="bewertungTotal"></strong> Bewertungen</p>
-    <button id="bewertungModalClose" style="margin-top:1rem; padding:0.5rem 1.5rem;">Schliessen</button>
+    <p class="bew-total">Gesamt: <strong id="bewertungTotal">–</strong> Bewertungen</p>
   </div>
 </div>
 
+<script src="js/dashboard.js"></script>
+<script src="js/logout.js"></script>
+<script>
+  const hamburgerBtn = document.getElementById("hamburgerBtn");
+  const drawerClose  = document.getElementById("drawerClose");
+  const navDrawer    = document.getElementById("navDrawer");
+  const backdrop     = document.getElementById("drawerBackdrop");
 
-    <script src="js/dashboard.js"></script>
-    <script src="js/logout.js"></script>
-  </body>
+  function openDrawer() {
+    navDrawer.classList.add("open");
+    backdrop.classList.add("open");
+    hamburgerBtn.classList.add("open");
+    hamburgerBtn.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+  }
+  function closeDrawer() {
+    navDrawer.classList.remove("open");
+    backdrop.classList.remove("open");
+    hamburgerBtn.classList.remove("open");
+    hamburgerBtn.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+  }
+
+  hamburgerBtn.addEventListener("click", openDrawer);
+  drawerClose.addEventListener("click", closeDrawer);
+  backdrop.addEventListener("click", closeDrawer);
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeDrawer(); });
+
+  // Nutzername + Orga in Drawer übertragen
+  const observer = new MutationObserver(() => {
+    const name = document.getElementById("userName").textContent;
+    const orga = document.getElementById("userOrga").textContent;
+    if (name && name !== "–") {
+      document.getElementById("drawerUserName").textContent = name;
+      document.getElementById("drawerUserOrga").textContent = orga;
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.getElementById("userName"), { childList: true, characterData: true, subtree: true });
+</script>
+</body>
 </html>
