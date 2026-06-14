@@ -17,7 +17,8 @@ YumYum Feedback ist ein interaktives Feedbacksystem, das die Lücke zwischen kin
 In diesem Teil werden die gemeinsamen Schritte aus der UX-Abgabe dokumentiert, damit sich hier alles vollständig an einem Ort befindet (betrifft WebApp und Physical Computing)
 
 •⁠  ⁠*Figma:* https://www.figma.com/design/duhxVGTsO6L7Tl17rjWYhk/IM-4-%E2%80%93-App-Konzeption-Vorlage--Copy-?node-id=97-1136&t=HTVwNsrONgHQfIB7-1
-•⁠  ⁠*User Flow + Screen Flow:* <img src="Userflow.png" alt="User Flow" width="600">
+•⁠  ⁠*User Flow + Screen Flow:* <img src="assets/Userflow.jpeg" alt="User Flow" width="600">
+•  *User Flow + Screen Flow Figma:* https://www.figma.com/board/qWYjUfc9T2vbG6PxpmFnCn/USER-FLOW?node-id=0-1&t=qyvtniZ1g1mnqeoW-1
 
 •⁠  ⁠*Welche Features waren angedacht?*
   * Echtzeit-Feedback: Visuelle Bestätigung am Gerät (LEDs) nach der Stimmabgabe.
@@ -57,7 +58,7 @@ Die eingesetzten Komponenten:
 •⁠  ⁠Prototyping-Plattform: Steckplatte ← Ermöglicht das lötfreie Aufstecken, Fixieren und elektrische Verschalten der Bauteile.
 •⁠  ⁠Verbindungsleitungen: Jumperkabel ← Verbinden die Pins der Komponenten flexibel mit der Steckplatte.
 
-Visualisierung Komponentenplan: XXX
+Visualisierung Komponentenplan: <img src="assets/Komponentenplan.png.jpeg" alt="Komponentenplan" width="500">
 
 Die verbundenen Sensoren und Aktoren:
 
@@ -96,10 +97,10 @@ Datenbank ⇄ Frontend (Benutzeroberfläche)
 •⁠  ⁠Protokoll: Das Skript dashboard.php fragt die Datenbank ab. Die Weboberfläche holt sich diese Daten ab, ordnet die Bewertungs-IDs über das Datum dem jeweiligen Menü zu und stellt die Ergebnisse im Betreuer-Kalender dar.
 
 Steckplan  
-<img src="Steckschema.jpeg" alt="Steckschema" width="500">
+<img src="assets/Steckschema.jpeg" alt="Steckschema" width="500">
 ---
 
-## technische Details
+## technische Details (Kae & Aarti)
 
 In diesem Abschnitt wird die softwareseitige Architektur, die Datenbeziehung und der genaue Kommunikationsfluss zwischen dem physischen Terminal (Physical Computing) und der Web-App (Backend/Frontend) aufgeschlüsselt.
 
