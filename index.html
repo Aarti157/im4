@@ -12,14 +12,15 @@
     :root {
       --cream:       #F7ECCA;
       --cream-dark:  #ede0b4;
+      --cream-alt:   #F3E3B7;
       --sand:        #B7AD8F;
       --sand-border: rgba(183,173,143,0.3);
       --olive:       #60583F;
-      --pink:        #F4B5D7;
-      --pink-hover:  #e899c8;
-      --pink-light:  rgba(244,181,215,0.18);
-      --blue:        #A8C9FF;
-      --blue-light:  rgba(168,201,255,0.22);
+      --pink:        #E984A4;
+      --pink-hover:  #d4608a;
+      --pink-light:  rgba(233,132,164,0.18);
+      --blue:        #7D8ECC;
+      --blue-light:  rgba(125,142,204,0.22);
       --text:        #2e2a1e;
       --text-muted:  #60583F;
       --text-faint:  #B7AD8F;
@@ -34,93 +35,201 @@
     html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
     body { font-family: var(--font-sans); background: var(--cream); color: var(--text); min-height: 100dvh; font-size: 1rem; line-height: 1.6; }
 
-    /* NAV */
-    .nav { background: var(--cream); border-bottom: 1px solid var(--sand-border); padding: 0.9rem 2.5rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 200; }
+    /* ── NAV ── */
+    .nav {
+      background: var(--cream);
+      border-bottom: 1px solid var(--sand-border);
+      padding: 0.9rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
     .nav-logo { display: flex; align-items: center; gap: 5px; text-decoration: none; }
-    .logo-block { width: 26px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: var(--font-serif); font-weight: 700; font-size: .88rem; }
+    .logo-block {
+      width: 26px; height: 26px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-serif); font-weight: 700; font-size: .88rem;
+    }
     .logo-block.a { background: var(--pink); color: var(--olive); }
     .logo-block.b { background: var(--blue); color: var(--olive); }
     .logo-block.c { background: none; color: var(--olive); }
 
     /* Hamburger */
-    .hamburger { background: none; border: 1px solid var(--sand-border); border-radius: var(--radius-md); width: 40px; height: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; transition: background var(--transition); position: relative; z-index: 300; }
+    .hamburger {
+      background: none;
+      border: 1px solid var(--sand-border);
+      border-radius: var(--radius-md);
+      width: 40px; height: 40px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+      cursor: pointer;
+      transition: background var(--transition);
+      position: relative; z-index: 300;
+    }
     .hamburger:hover { background: var(--cream-dark); }
-    .hamburger span { display: block; width: 18px; height: 1.5px; background: var(--olive); border-radius: 2px; transition: transform 220ms ease, opacity 180ms ease; }
+    .hamburger span {
+      display: block; width: 18px; height: 1.5px;
+      background: var(--olive); border-radius: 2px;
+      transition: transform 220ms ease, opacity 180ms ease;
+    }
     .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
     .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
     .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
     /* Drawer backdrop */
-    .drawer-backdrop { position: fixed; inset: 0; background: rgba(48,40,20,0.32); backdrop-filter: blur(3px); z-index: 240; opacity: 0; pointer-events: none; transition: opacity 240ms ease; }
+    .drawer-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(48,40,20,0.32);
+      backdrop-filter: blur(3px);
+      z-index: 240;
+      opacity: 0; pointer-events: none;
+      transition: opacity 240ms ease;
+    }
     .drawer-backdrop.open { opacity: 1; pointer-events: all; }
 
     /* Drawer */
-    .nav-drawer { position: fixed; top: 0; right: 0; width: min(340px, 90vw); height: 100dvh; background: var(--white-card); border-left: 1px solid var(--sand-border); box-shadow: var(--shadow-drawer); z-index: 250; transform: translateX(100%); transition: transform 290ms cubic-bezier(0.16,1,0.3,1); display: flex; flex-direction: column; padding: 1.6rem; overflow-y: auto; }
+    .nav-drawer {
+      position: fixed; top: 0; right: 0;
+      width: min(340px, 90vw); height: 100dvh;
+      background: var(--white-card);
+      border-left: 1px solid var(--sand-border);
+      box-shadow: var(--shadow-drawer);
+      z-index: 250;
+      transform: translateX(100%);
+      transition: transform 290ms cubic-bezier(0.16,1,0.3,1);
+      display: flex; flex-direction: column;
+      padding: 1.6rem;
+      overflow-y: auto;
+    }
     .nav-drawer.open { transform: translateX(0); }
-    .drawer-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
+
+    .drawer-top {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 2rem;
+    }
     .drawer-brand { font-family: var(--font-serif); font-size: 1rem; font-weight: 700; color: var(--text); }
+
+    /* Konto section */
     .drawer-section { margin-bottom: 1.6rem; }
-    .drawer-section-label { font-size: 0.67rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 0.6rem; padding-left: 0.1rem; }
+    .drawer-section-label {
+      font-size: 0.67rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-faint);
+      margin-bottom: 0.6rem; padding-left: 0.1rem;
+    }
     .konto-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
-    .konto-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.3rem; padding: 1rem 0.5rem; border-radius: var(--radius-lg); border: 1px solid var(--sand-border); text-decoration: none; background: var(--cream); transition: background var(--transition), border-color var(--transition); text-align: center; }
+    .konto-card {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 0.3rem; padding: 1rem 0.5rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--sand-border);
+      text-decoration: none;
+      background: var(--cream);
+      transition: background var(--transition), border-color var(--transition);
+      text-align: center;
+    }
     .konto-card:hover { background: var(--cream-dark); border-color: var(--sand); }
-    .konto-card-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.2rem; }
+    .konto-card-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 0.2rem;
+    }
+    .konto-card-icon svg { display: block; }
     .konto-card-label { font-size: 0.8rem; font-weight: 600; color: var(--text); }
     .konto-card-sub { font-size: 0.68rem; color: var(--text-faint); }
-    .konto-card.primary-card { background: var(--pink-light); border-color: rgba(244,181,215,0.4); }
-    .konto-card.primary-card:hover { background: rgba(244,181,215,0.32); border-color: var(--pink); }
+    .konto-card.primary-card { background: var(--pink-light); border-color: rgba(233,132,164,0.4); }
+    .konto-card.primary-card:hover { background: rgba(233,132,164,0.32); border-color: var(--pink); }
+
     .drawer-divider { border: none; border-top: 1px solid var(--sand-border); margin: 0.6rem 0 1rem; }
+
+    /* Nav links */
     .drawer-nav { display: flex; flex-direction: column; gap: 0.1rem; }
-    .drawer-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0.8rem; border-radius: var(--radius-md); text-decoration: none; font-size: 0.9rem; font-weight: 500; color: var(--text-muted); transition: background var(--transition), color var(--transition); }
+    .drawer-link {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.65rem 0.8rem; border-radius: var(--radius-md);
+      text-decoration: none; font-size: 0.9rem; font-weight: 500; color: var(--text-muted);
+      transition: background var(--transition), color var(--transition);
+    }
     .drawer-link:hover { background: var(--cream); color: var(--text); }
     .drawer-link-icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--sand); }
+
     .drawer-footer { margin-top: auto; padding-top: 1.2rem; border-top: 1px solid var(--sand-border); font-size: 0.73rem; color: var(--text-faint); }
 
-    /* HERO */
-    .hero { padding: 5rem 2.5rem 4rem; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; min-height: 85vh; }
-    .hero-h1 { font-family: var(--font-serif); font-size: clamp(2.2rem, 3.5vw, 3.4rem); font-weight: 700; line-height: 1.12; color: var(--text); margin-bottom: 1.5rem; letter-spacing: -0.01em; }
+    /* ── HERO ── */
+    .hero {
+      padding: 5rem 2.5rem 4rem; max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+      align-items: center; min-height: 85vh;
+    }
+    .hero-h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 3.5vw, 3.4rem);
+      font-weight: 700; line-height: 1.12; color: var(--text);
+      margin-bottom: 1.5rem; letter-spacing: -0.01em;
+    }
     .hero-p { font-size: 1rem; color: var(--text-muted); max-width: 46ch; line-height: 1.7; margin-bottom: 2.2rem; }
     .hero-btns { display: flex; gap: 0.8rem; flex-wrap: wrap; }
-    .btn-primary { background: var(--pink); color: var(--olive); border: none; border-radius: var(--radius-md); padding: 0.75rem 1.6rem; font-family: var(--font-sans); font-size: 0.92rem; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: background var(--transition), transform 120ms ease; }
+    .btn-primary {
+      background: var(--pink); color: var(--olive);
+      border: none; border-radius: var(--radius-md);
+      padding: 0.75rem 1.6rem; font-family: var(--font-sans); font-size: 0.92rem; font-weight: 600;
+      cursor: pointer; text-decoration: none; display: inline-block;
+      transition: background var(--transition), transform 120ms ease;
+    }
     .btn-primary:hover { background: var(--pink-hover); transform: translateY(-1px); }
-    .btn-secondary { background: none; color: var(--olive); border: 1px solid rgba(96,88,63,0.3); border-radius: var(--radius-md); padding: 0.75rem 1.6rem; font-family: var(--font-sans); font-size: 0.92rem; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-block; transition: background var(--transition); }
+    .btn-secondary {
+      background: none; color: var(--olive);
+      border: 1px solid rgba(96,88,63,0.3); border-radius: var(--radius-md);
+      padding: 0.75rem 1.6rem; font-family: var(--font-sans); font-size: 0.92rem; font-weight: 500;
+      cursor: pointer; text-decoration: none; display: inline-block;
+      transition: background var(--transition);
+    }
     .btn-secondary:hover { background: var(--cream-dark); }
     .hero-right { display: flex; align-items: center; justify-content: center; }
-    .hero-img { width: 100%; max-width: 460px; height: auto; border-radius: 24px; object-fit: cover; }
-    .hero-card { width: 100%; max-width: 380px; aspect-ratio: 4/3; background: var(--white-card); border-radius: var(--radius-xl); border: 1px solid var(--sand-border); box-shadow: var(--shadow-card); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.2rem; padding: 2rem; }
-    .hero-card-title { font-family: var(--font-serif); font-size: 0.95rem; font-weight: 700; color: var(--text); text-align: center; }
-    .feedback-pills { display: flex; gap: 0.6rem; }
-    .pill { padding: 0.45rem 1rem; border-radius: var(--radius-pill); font-size: 0.8rem; font-weight: 600; border: 1px solid transparent; }
-    .pill.good    { background: var(--pink-light); border-color: rgba(244,181,215,0.5); color: var(--olive); }
-    .pill.neutral { background: rgba(183,173,143,0.2); border-color: var(--sand-border); color: var(--olive); }
-    .pill.bad     { background: var(--blue-light); border-color: rgba(168,201,255,0.4); color: var(--olive); }
+    .hero-img {
+      width: 100%;
+      max-width: 460px;
+      height: auto;
+      border-radius: var(--radius-xl);
+      object-fit: cover;
+    }
 
-    /* BANNER */
-    .section-knopf { background: var(--sand); padding: 4rem 2.5rem; text-align: center; }
-    .section-knopf h2 { font-family: var(--font-serif); font-size: clamp(1.5rem,2.5vw,2.1rem); font-weight: 700; color: var(--white-card); max-width: 640px; margin: 0 auto; line-height: 1.25; }
+    /* ── KNOPFDRUCK ── */
+    .section-knopf { background: #F3E3B7; padding: 4rem 2.5rem; text-align: center; }
+    .section-knopf h2 {
+      font-family: var(--font-serif); font-size: clamp(1.5rem,2.5vw,2.1rem);
+      font-weight: 700; color: var(--text); max-width: 640px; margin: 0 auto; line-height: 1.25;
+    }
 
-    /* FEATURES */
-    .section-features { padding: 4rem 2.5rem; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-    .feature-card { background: var(--white-card); border: 1px solid var(--sand-border); border-radius: var(--radius-xl); padding: 2.2rem; box-shadow: var(--shadow-card); }
-    .feature-dot { width: 10px; height: 10px; border-radius: 50%; margin-bottom: 1.4rem; }
-    .feature-dot.pink-dot { background: var(--pink); }
-    .feature-dot.blue-dot { background: var(--blue); }
-    .feature-card h3 { font-family: var(--font-serif); font-size: 1.15rem; font-weight: 700; color: var(--text); margin-bottom: 0.7rem; }
-    .feature-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1.2rem; }
-    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; }
-    .feature-list li { font-size: 0.84rem; color: var(--text-muted); display: flex; align-items: flex-start; gap: 0.5rem; }
-    .feature-list li::before { content: "—"; color: var(--text-faint); flex-shrink: 0; }
+    /* ── FEATURES ── */
+    .section-features-wrap { background: var(--cream-alt); }
+    .section-features { padding: 4rem 2.5rem 5rem; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+    .feature-card { background: none; border: none; padding: 0; }
+    .feature-icon { width: 56px; height: 56px; border-radius: 50%; background: rgba(125,142,204,0.22); display: flex; align-items: center; justify-content: center; margin-bottom: 1.6rem; }
+    .feature-dot { display: none; }
+    .feature-card h3 { font-family: var(--font-serif); font-size: 1.35rem; font-weight: 700; color: var(--blue); margin-bottom: 0.9rem; }
+    .feature-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.75; margin-bottom: 1.4rem; }
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .feature-list li { font-size: 0.88rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.6rem; }
+    .feature-list li::before { content: "•"; color: var(--blue); font-size: 1rem; flex-shrink: 0; }
 
-    /* ÜBER UNS */
+    /* ── ÜBER UNS ── */
     .section-about { padding: 5rem 2.5rem; max-width: 680px; margin: 0 auto; text-align: center; }
     .section-about h2 { font-family: var(--font-serif); font-size: clamp(1.4rem,2.2vw,1.9rem); font-weight: 700; color: var(--text); margin-bottom: 1.2rem; }
     .section-about p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.75; }
 
-    /* KONTAKT */
+    /* ── KONTAKT ── */
     .section-kontakt { padding: 3rem 2.5rem 6rem; max-width: 520px; margin: 0 auto; text-align: center; }
     .section-kontakt h2 { font-family: var(--font-serif); font-size: clamp(1.4rem,2.2vw,1.9rem); font-weight: 700; color: var(--text); margin-bottom: 0.8rem; }
     .section-kontakt p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1.8rem; }
-    .btn-contact { display: inline-block; background: var(--olive); color: var(--cream); text-decoration: none; border-radius: var(--radius-md); padding: 0.75rem 1.8rem; font-size: 0.9rem; font-weight: 500; transition: background var(--transition); }
+    .btn-contact {
+      display: inline-block; background: var(--olive); color: var(--cream);
+      text-decoration: none; border-radius: var(--radius-md);
+      padding: 0.75rem 1.8rem; font-size: 0.9rem; font-weight: 500;
+      transition: background var(--transition);
+    }
     .btn-contact:hover { background: #4a4230; }
 
     footer { text-align: center; padding: 2rem; font-size: 0.78rem; color: var(--text-faint); border-top: 1px solid var(--sand-border); }
@@ -132,6 +241,75 @@
       .nav { padding: 0.8rem 1.5rem; }
       .section-knopf { padding: 2.5rem 1.5rem; }
     }
+  
+    /* ── SO FUNKTIONIERTS ── */
+    .section-howto-wrap { background: #F3E3B7; }
+    .section-howto { padding: 5rem 2.5rem; max-width: 1100px; margin: 0 auto; }
+    .section-howto-wrap .section-h2,
+    .section-howto-wrap .section-sub,
+    .section-howto-wrap .howto-title,
+    .section-howto-wrap .howto-sub { color: #60583F; }
+    .section-center { text-align: center; margin-bottom: 3rem; }
+    .section-h2 { font-family: var(--font-serif); font-size: clamp(1.6rem,2.8vw,2.4rem); font-weight: 700; color: var(--text); margin-bottom: 0.8rem; letter-spacing: -0.01em; }
+    .section-sub { font-size: 0.92rem; color: var(--text-muted); max-width: 56ch; margin: 0 auto; line-height: 1.6; }
+    .howto-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 2rem; }
+    .howto-step { text-align: center; }
+    .howto-icon { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem; }
+    .blue-bg { background: rgba(125,142,204,0.18); }
+    .howto-title { font-family: var(--font-serif); font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 0.4rem; }
+    .howto-sub { font-size: 0.82rem; color: var(--text-muted); line-height: 1.55; }
+
+    /* ── DREI OPTIONEN ── */
+    .section-options-wrap { background: var(--cream); }
+    .section-options { padding: 4rem 2.5rem 5rem; max-width: 1100px; margin: 0 auto; }
+    .options-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+    .option-card { background: var(--white-card); border: 1px solid var(--sand-border); border-radius: var(--radius-xl); padding: 2.8rem 2rem; text-align: center; box-shadow: var(--shadow-card); }
+    .option-card-pink { background: rgba(233,132,164,0.12); border-color: rgba(233,132,164,0.35); }
+    .option-card-blue { background: rgba(125,142,204,0.12); border-color: rgba(125,142,204,0.35); }
+    .option-card-brown { background: rgba(183,173,143,0.2); border-color: rgba(96,88,63,0.2); }
+    .option-icon { width: 72px; height: 72px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.6rem; }
+    .pink-circle { background: rgba(233,132,164,0.22); }
+    .blue-circle { background: rgba(125,142,204,0.22); }
+    .sand-circle { background: rgba(96,88,63,0.12); }
+    .option-title { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 700; color: var(--text); margin-bottom: 0.4rem; }
+    .option-sub { font-size: 0.85rem; color: var(--text-muted); }
+
+    /* ── FÜR WEN ── */
+    .section-vorteile-wrap { background: var(--cream-alt); }
+    .section-fuer { padding: 4rem 2.5rem 5rem; max-width: 1100px; margin: 0 auto; }
+    .fuer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+    .fuer-accent { width: 36px; height: 3px; border-radius: 2px; margin-bottom: 1.4rem; }
+    .blue-accent { background: var(--blue); }
+    .pink-accent { background: var(--pink); }
+    .fuer-title { font-family: var(--font-serif); font-size: 1.15rem; font-weight: 700; color: var(--text); margin-bottom: 1.2rem; }
+    .fuer-list { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+    .fuer-list li { font-size: 0.9rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.6rem; }
+    .fuer-blue li::before { content: "•"; color: var(--blue); font-size: 1.1rem; }
+    .fuer-pink li::before { content: "•"; color: var(--pink); font-size: 1.1rem; }
+
+    /* ── TESTIMONIAL ── */
+    .section-testimonial-wrap { background: var(--cream); }
+    .section-testimonial { padding: 4rem 2.5rem 5rem; max-width: 780px; margin: 0 auto; }
+    .testimonial-inner { }
+    .testimonial-accent { width: 36px; height: 3px; border-radius: 2px; margin-bottom: 2rem; }
+    .testimonial-quote { font-family: var(--font-serif); font-size: clamp(1rem,1.5vw,1.2rem); color: var(--text); line-height: 1.75; font-style: normal; margin-bottom: 2rem; }
+    .testimonial-name { font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 0.15rem; }
+    .testimonial-role { font-size: 0.82rem; color: var(--text-muted); }
+
+    /* ── CTA ── */
+    .section-cta-wrap { background: var(--cream-alt); }
+    .section-cta { padding: 5rem 2.5rem 6rem; text-align: center; max-width: 680px; margin: 0 auto; }
+    .cta-h2 { font-family: var(--font-serif); font-size: clamp(1.6rem,2.8vw,2.4rem); font-weight: 700; color: var(--text); margin-bottom: 1rem; line-height: 1.2; letter-spacing: -0.01em; }
+    .cta-sub { font-size: 0.92rem; color: var(--text-muted); max-width: 52ch; margin: 0 auto 2.2rem; line-height: 1.65; }
+    .cta-btns { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+
+    @media (max-width: 768px) {
+      .howto-steps { grid-template-columns: repeat(2,1fr); }
+      .options-grid { grid-template-columns: 1fr; }
+      .fuer-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .section-howto, .section-options, .section-fuer, .section-testimonial, .section-cta { padding-left: 1.5rem; padding-right: 1.5rem; }
+    }
+
   </style>
 </head>
 <body>
@@ -180,11 +358,11 @@
         <svg class="drawer-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         Vorteile
       </a>
-      <a href="#ueber-uns" class="drawer-link" onclick="closeDrawer()">
+      <a href="ueber_uns.html" class="drawer-link">
         <svg class="drawer-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         Über uns
       </a>
-      <a href="#kontakt" class="drawer-link" onclick="closeDrawer()">
+      <a href="kontakt.html" class="drawer-link">
         <svg class="drawer-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         Kontakt
       </a>
@@ -197,12 +375,7 @@
 <!-- NAV -->
 <nav class="nav">
   <a href="index.html" class="nav-logo" aria-label="YumYum">
-    <div class="logo-block a">Y</div>
-    <div class="logo-block b">u</div>
-    <div class="logo-block c">m</div>
-    <div class="logo-block a">Y</div>
-    <div class="logo-block b">u</div>
-    <div class="logo-block c">m</div>
+    <img src="img/logo_yumyum.png" alt="YumYum" style="height:72px; width:auto; display:block;" />
   </a>
   <button class="hamburger" id="hamburgerBtn" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navDrawer">
     <span></span><span></span><span></span>
@@ -219,22 +392,22 @@
       <a href="#wie-es-funktioniert" class="btn-secondary">Mehr erfahren</a>
     </div>
   </div>
-<div class="hero-right">
-  
-<img src="img/kids_startseite.png" alt="" class="hero-img" />
-
+  <div class="hero-right">
+    <img src="img/kids_startseite.png" alt="Kinder beim Essen" class="hero-img" />
   </div>
 </section>
 
 <!-- SO FUNKTIONIERT'S -->
-<section class="section-knopf" id="wie-es-funktioniert">
+<section class="section-knopf" id="motto">
   <h2>Von einem Knopfdruck zur besseren Menüplanung</h2>
 </section>
 
-<!-- VORTEILE -->
+<!-- VORTEILE / FEATURES -->
 <section class="section-features" id="vorteile">
   <div class="feature-card">
-    <div class="feature-dot pink-dot"></div>
+    <div class="feature-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7D8ECC" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+    </div>
     <h3>Physisches Gerät</h3>
     <p>Kinderfreundliche Tasten an Essensplätzen. Einfach, haptisch und intuitiv. Kinder drücken ihre Wahl nach dem Essen und lassen ihre Stimme auf spielerische Weise hören.</p>
     <ul class="feature-list">
@@ -244,7 +417,9 @@
     </ul>
   </div>
   <div class="feature-card">
-    <div class="feature-dot blue-dot"></div>
+    <div class="feature-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7D8ECC" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    </div>
     <h3>Web-App</h3>
     <p>Sicheres Dashboard für Eltern und Betreuende. Klare Datenvisualisierungen zeigen Muster, Trends und Präferenzen im Zeitverlauf mit Klarheit und Sorgfalt.</p>
     <ul class="feature-list">
@@ -254,19 +429,139 @@
     </ul>
   </div>
 </section>
+</div>
 
-<!-- ÜBER UNS -->
-<section class="section-about" id="ueber-uns">
-  <h2>Über uns</h2>
-  <p>YumYum entstand aus dem Wunsch, die Stimmen von Kindern bei der Menüplanung sichtbar zu machen — einfach, spielerisch und zuverlässig. Wir sind ein kleines Team, das Technologie mit Menschlichkeit verbindet.</p>
+<!-- SO FUNKTIONIERTS -->
+<div class="section-howto-wrap">
+<section class="section-howto" id="wie-es-funktioniert">
+  <div class="section-center">
+    <h2 class="section-h2">So funktioniert's</h2>
+    <p class="section-sub">Ein nahtloser Ablauf von der Kindereingabe zur Betreuungseinblick</p>
+  </div>
+  <div class="howto-steps">
+    <div class="howto-step">
+      <div class="howto-icon blue-bg">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:#7D8ECC"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+      </div>
+      <p class="howto-title">Kind drückt Taste</p>
+      <p class="howto-sub">Einfaches haptisches Feedback nach dem Essen</p>
+    </div>
+    <div class="howto-step">
+      <div class="howto-icon blue-bg">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:#7D8ECC"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+      </div>
+      <p class="howto-title">Gerät erfasst Antwort</p>
+      <p class="howto-sub">Sofortige drahtlose Übertragung</p>
+    </div>
+    <div class="howto-step">
+      <div class="howto-icon blue-bg">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:#7D8ECC"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </div>
+      <p class="howto-title">Daten via WLAN gesendet</p>
+      <p class="howto-sub">Sichere Cloud-Speicherung</p>
+    </div>
+    <div class="howto-step">
+      <div class="howto-icon blue-bg">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:#7D8ECC"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <p class="howto-title">Web-App zeigt Feedback</p>
+      <p class="howto-sub">Klare Visualisierungen für Erwachsene</p>
+    </div>
+  </div>
 </section>
+</div>
 
-<!-- KONTAKT -->
-<section class="section-kontakt" id="kontakt">
-  <h2>Kontakt</h2>
-  <p>Fragen, Feedback oder Interesse an einer Demo? Wir freuen uns von dir zu hören.</p>
-  <a href="mailto:hallo@yumyum.ch" class="btn-contact">hallo@yumyum.ch</a>
+<!-- DREI OPTIONEN -->
+<div class="section-options-wrap">
+<section class="section-options">
+  <div class="section-center">
+    <h2 class="section-h2">Drei einfache Optionen</h2>
+    <p class="section-sub">Klare, ausdrucksstarke Möglichkeiten für kleine Kinder</p>
+  </div>
+  <div class="options-grid">
+    <div class="option-card option-card-pink">
+      <div class="option-icon pink-circle">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E984A4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+      </div>
+      <h3 class="option-title">Yum</h3>
+      <p class="option-sub">Hat mir geschmeckt!</p>
+    </div>
+    <div class="option-card option-card-blue">
+      <div class="option-icon blue-circle">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7D8ECC" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="15" x2="16" y2="15"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+      </div>
+      <h3 class="option-title">Naja</h3>
+      <p class="option-sub">War in Ordnung</p>
+    </div>
+    <div class="option-card option-card-brown">
+      <div class="option-icon sand-circle">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#60583F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+      </div>
+      <h3 class="option-title">Nicht Yum</h3>
+      <p class="option-sub">Nicht mein Fall</p>
+    </div>
+  </div>
 </section>
+</div>
+
+<!-- FÜR WEN -->
+<div class="section-vorteile-wrap" id="vorteile">
+<section class="section-fuer">
+  <div class="fuer-grid">
+    <div class="fuer-col">
+      <div class="fuer-accent blue-accent"></div>
+      <h3 class="fuer-title">Für Kinder</h3>
+      <ul class="fuer-list fuer-blue">
+        <li>Spielerische Interaktion</li>
+        <li>Gehört werden</li>
+        <li>Selbstwirksamkeit aufbauen</li>
+        <li>Einfacher Ausdruck</li>
+      </ul>
+    </div>
+    <div class="fuer-col">
+      <div class="fuer-accent pink-accent"></div>
+      <h3 class="fuer-title">Für Eltern &amp; Betreuende</h3>
+      <ul class="fuer-list fuer-pink">
+        <li>Transparenz und Einblicke</li>
+        <li>Gesprächsanlass mit Kindern</li>
+        <li>Präferenzen verstehen</li>
+        <li>Bessere Menüplanung</li>
+        <li>Einfache Feedback-Erfassung</li>
+        <li>Datenbasierte Entscheidungen</li>
+        <li>Reduzierung von Food Waste</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- TESTIMONIAL -->
+<div class="section-testimonial-wrap">
+<section class="section-testimonial">
+  <div class="testimonial-inner">
+    <div class="testimonial-accent blue-accent"></div>
+    <blockquote class="testimonial-quote">
+      „Seit der Einführung von YumYum haben wir bemerkenswerte Veränderungen im Umgang der Kinder mit Mahlzeiten erlebt. Sie fühlen sich ermutigt, ihre Meinung zu teilen, und wir konnten unser Menü auf Basis echter Präferenzen verfeinern. Es hat unseren Ansatz zur Ernährungsplanung grundlegend verändert."
+    </blockquote>
+    <div class="testimonial-author">
+      <p class="testimonial-name">Maria Lindström</p>
+      <p class="testimonial-role">Leiterin Ernährung, Kita Sonnenblume</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- CTA -->
+<div class="section-cta-wrap">
+<section class="section-cta">
+  <h2 class="cta-h2">Bereit zu verstehen, was Kinder wirklich denken?</h2>
+  <p class="cta-sub">Entdecken Sie, wie YumYum Klarheit in Ihre Kinderbetreuungseinrichtung bringen kann</p>
+  <div class="cta-btns">
+    <a href="register.html" class="btn-primary">Jetzt starten</a>
+    <a href="kontakt.html" class="btn-secondary">Kontakt aufnehmen</a>
+  </div>
+</section>
+</div>
 
 <footer>© 2026 YumYum. Mit Sorgfalt für Kinder und Betreuende gemacht.</footer>
 

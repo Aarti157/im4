@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YumYum – Über uns</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #F7ECCA; --cream-alt: #F3E3B7; --sand: #B7AD8F;
+      --sand-border: rgba(183,173,143,0.30); --olive: #60583F;
+      --pink: #E984A4; --blue: #7D8ECC;
+      --white-card: #fdfaf2; --text: #2e2a1e;
+      --text-muted: #60583F; --text-faint: #B7AD8F;
+      --radius-md: 10px; --radius-xl: 24px;
+      --font-serif: 'Libre Baskerville', Georgia, serif;
+      --font-sans: 'Inter', system-ui, sans-serif;
+    }
+    html { -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--font-sans); background: var(--cream); color: var(--text); min-height: 100dvh; font-size: 1rem; line-height: 1.6; }
+
+    /* NAV */
+    .nav { background: var(--cream); border-bottom: 1px solid var(--sand-border); padding: 0.9rem 2.5rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 200; }
+    .nav-logo { display: flex; align-items: center; gap: 5px; text-decoration: none; }
+    .logo-block { width: 26px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: var(--font-serif); font-weight: 700; font-size: .88rem; }
+    .logo-block.a { background: var(--pink); color: #fff; }
+    .logo-block.b { background: var(--blue); color: #fff; }
+    .logo-block.c { background: none; color: var(--olive); }
+    .back-link { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--text-muted); text-decoration: none; }
+    .back-link:hover { color: var(--olive); }
+
+    /* CONTENT */
+    .page-wrap { max-width: 720px; margin: 0 auto; padding: 4rem 2rem 6rem; }
+
+    h1 { font-family: var(--font-serif); font-size: clamp(2rem, 3.5vw, 2.8rem); font-weight: 700; color: var(--text); margin-bottom: 1.6rem; letter-spacing: -0.01em; }
+    .lead { font-size: 1.05rem; font-weight: 600; color: var(--text-muted); margin-bottom: 1.4rem; line-height: 1.65; }
+    p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 1.2rem; }
+
+    .divider { border: none; border-top: 1px solid var(--sand-border); margin: 3rem 0; }
+
+    h2 { font-family: var(--font-serif); font-size: clamp(1.4rem, 2.5vw, 1.9rem); font-weight: 700; color: var(--text); margin-bottom: 1.4rem; letter-spacing: -0.01em; }
+
+    @media (max-width: 600px) { .page-wrap { padding: 2.5rem 1.4rem 4rem; } .nav { padding: 0.8rem 1.2rem; } }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="img/logo_yumyum.png" alt="YumYum" style="height:36px;width:auto;display:block;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+    <div style="display:none;align-items:center;gap:5px;">
+      <div class="logo-block a">Y</div>
+      <div class="logo-block b">u</div>
+      <div class="logo-block c">m</div>
+      <div class="logo-block a">Y</div>
+      <div class="logo-block b">u</div>
+      <div class="logo-block c">m</div>
+    </div>
+  </a>
+  <a href="index.html" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Zurück zur Startseite
+  </a>
+</nav>
+
+<div class="page-wrap">
+  <h1>Über uns</h1>
+  <p class="lead">Kinder haben eine Stimme und wir glauben daran, sie hörbar zu machen.</p>
+  <p>YumYum entstand aus der Überzeugung, dass auch die Kleinsten ein Mitspracherecht verdienen, wenn es um ihre Mahlzeiten geht. Wir möchten Kindern ermöglichen, ihre Meinung spielerisch und selbstbestimmt zu äussern und gleichzeitig Eltern und Betreuenden wertvolle Einblicke in echte Präferenzen geben.</p>
+  <p>Unser Ziel ist es, eine Brücke zwischen Kindern und Erwachsenen zu bauen: Durch einfaches Feedback, klare Daten und gemeinsames Verständnis schaffen wir bessere Mahlzeiten, mehr Freude am Essen und eine Kultur des Zuhörens.</p>
+
+  <hr class="divider" />
+
+  <h2>Das sind wir</h2>
+  <p>Die Idee zu YumYum wurde 2024 geboren, als vier Frauen aus unterschiedlichen Hintergründen – Pädagogik, Technologie, Ernährungswissenschaft und Design – zusammenkamen. Alle hatten sie eine gemeinsame Beobachtung: In Kitas und Betreuungseinrichtungen fehlte eine einfache, kindgerechte Möglichkeit, Essensvorlieben sichtbar zu machen.</p>
+  <p>Was als Gespräch über verschwendetes Essen und ungehörte Kinderstimmen begann, entwickelte sich zu einer Mission: Ein System zu schaffen, das spielerisch, intuitiv und respektvoll ist – sowohl gegenüber den Kindern als auch den Betreuenden. Heute verbinden wir haptisches Feedback mit digitalen Einblicken und helfen dabei, Menüs zu verbessern, Food Waste zu reduzieren und Kinder aktiv einzubeziehen.</p>
+</div>
+
+</body>
+</html>

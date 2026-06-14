@@ -16,9 +16,10 @@
       --sand-border: rgba(183,173,143,0.30);
       --olive:       #60583F;
       --olive-hover: #4a4230;
-      --pink:        #F4B5D7;
-      --pink-hover:  #e899c8;
-      --pink-light:  rgba(244,181,215,0.25);
+      --pink:        #557A69;
+      --pink-hover:  #3f5e50;
+      --pink-light:  rgba(85,122,105,0.25);
+      --blue:        #7D8ECC;
       --white-card:  #fdfaf2;
       --text:        #2e2a1e;
       --text-muted:  #60583F;
@@ -31,140 +32,61 @@
       --font-serif:  'Libre Baskerville', Georgia, serif;
       --font-sans:   'Inter', system-ui, sans-serif;
     }
-
     html { -webkit-font-smoothing: antialiased; }
-    body {
-      font-family: var(--font-sans);
-      background: var(--cream);
-      color: var(--text);
-      min-height: 100dvh;
-      font-size: 1rem;
-      line-height: 1.6;
-      display: flex;
-      flex-direction: column;
-    }
+    body { font-family: var(--font-sans); background: var(--cream); color: var(--text); min-height: 100dvh; font-size: 1rem; line-height: 1.6; display: flex; flex-direction: column; }
 
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      text-decoration: none;
-      padding: 1.4rem 1.6rem 0;
-      transition: color 130ms ease;
-    }
-
+    /* Back link */
+    .back-link { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--text-muted); text-decoration: none; padding: 1.4rem 1.6rem 0; transition: color 130ms ease; }
     .back-link:hover { color: var(--olive); }
 
-    .auth-wrap {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem 1rem 3rem;
-    }
+    /* Card */
+    .auth-wrap { flex: 1; display: flex; align-items: center; justify-content: center; padding: 1.5rem 1rem 3rem; }
+    .auth-card { background: var(--white-card); border-radius: var(--radius-xl); padding: 2.8rem 2.4rem; width: 100%; max-width: 420px; box-shadow: var(--shadow-card); }
 
-    .auth-card {
-      background: var(--white-card);
-      border-radius: var(--radius-xl);
-      padding: 2.8rem 2.4rem;
-      width: 100%;
-      max-width: 420px;
-      box-shadow: var(--shadow-card);
-    }
+    .auth-card h1 { font-family: var(--font-serif); font-size: 1.9rem; font-weight: 700; color: var(--text); text-align: center; margin-bottom: 0.5rem; letter-spacing: -0.01em; }
+    .auth-sub { font-size: 0.88rem; color: var(--text-faint); text-align: center; margin-bottom: 2rem; line-height: 1.5; }
 
-    .auth-card h1 {
-      font-family: var(--font-serif);
-      font-size: 1.9rem;
-      font-weight: 700;
-      color: var(--text);
-      text-align: center;
-      margin-bottom: 0.5rem;
-      letter-spacing: -0.01em;
-    }
-
-    .auth-sub {
-      font-size: 0.88rem;
-      color: var(--text-faint);
-      text-align: center;
-      margin-bottom: 2rem;
-      line-height: 1.5;
-    }
-
+    /* Fields */
     .field { margin-bottom: 1.2rem; }
-
-    .field label {
-      display: block;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 0.45rem;
-    }
-
-    .field input {
-      width: 100%;
-      background: var(--cream);
-      border: 1.5px solid var(--sand-border);
-      border-radius: var(--radius-md);
-      padding: 0.75rem 1rem;
-      font-family: var(--font-sans);
-      font-size: 0.92rem;
-      color: var(--text);
-      outline: none;
-      transition: border-color 140ms ease, box-shadow 140ms ease;
-    }
-
+    .field label { display: block; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.45rem; }
+    .field input { width: 100%; background: var(--cream); border: 1.5px solid var(--sand-border); border-radius: var(--radius-md); padding: 0.75rem 1rem; font-family: var(--font-sans); font-size: 0.92rem; color: var(--text); outline: none; transition: border-color 140ms ease, box-shadow 140ms ease; }
     .field input::placeholder { color: var(--text-faint); }
+    .field input:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba(85,122,105,0.22); }
 
-    .field input:focus {
-      border-color: var(--pink);
-      box-shadow: 0 0 0 3px rgba(244,181,215,0.22);
+    /* Role toggle */
+    .role-label { display: block; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.6rem; }
+    .role-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 0.5rem; }
+    .role-card { position: relative; }
+    .role-card input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+    .role-card label {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 0.35rem; padding: 1rem 0.5rem;
+      border: 1.5px solid var(--sand-border); border-radius: var(--radius-lg);
+      background: var(--cream); cursor: pointer; font-size: 0.82rem; font-weight: 600; color: var(--text);
+      transition: all 150ms ease; text-align: center;
     }
+    .role-card label svg { color: var(--sand); transition: color 150ms ease; }
+    .role-card input[type="radio"]:checked + label { background: var(--pink-light); border-color: var(--pink); color: var(--olive); }
+    .role-card input[type="radio"]:checked + label svg { color: var(--olive); }
+    .role-hint { font-size: 0.75rem; color: var(--text-faint); margin-bottom: 1.2rem; line-height: 1.5; }
 
-    .btn-submit {
-      display: block;
-      width: 100%;
-      background: var(--pink);
-      color: var(--olive);
-      border: none;
-      border-radius: var(--radius-pill);
-      padding: 0.85rem;
-      font-family: var(--font-sans);
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      text-align: center;
-      margin-top: 1.4rem;
-      transition: background 140ms ease, transform 120ms ease;
-    }
+    /* Select */
+    .select-wrap { position: relative; }
+    .select-wrap select { width: 100%; background: var(--cream); border: 1.5px solid var(--sand-border); border-radius: var(--radius-md); padding: 0.75rem 2.2rem 0.75rem 1rem; font-family: var(--font-sans); font-size: 0.92rem; color: var(--text); outline: none; appearance: none; transition: border-color 140ms ease; }
+    .select-wrap select:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba(85,122,105,0.22); }
+    .select-wrap::after { content: ""; position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid var(--text-faint); pointer-events: none; }
 
-    .btn-submit:hover {
-      background: var(--pink-hover);
-      transform: translateY(-1px);
-    }
+    /* Button */
+    .btn-submit { display: block; width: 100%; background: var(--pink); color: var(--olive); border: none; border-radius: var(--radius-pill); padding: 0.85rem; font-family: var(--font-sans); font-size: 0.95rem; font-weight: 700; cursor: pointer; text-align: center; margin-top: 1.4rem; transition: background 140ms ease, transform 120ms ease; }
+    .btn-submit:hover { background: #6fa088; transform: translateY(-1px); }
 
-    .auth-footer {
-      text-align: center;
-      font-size: 0.84rem;
-      color: var(--text-faint);
-      margin-top: 1.4rem;
-    }
+    /* Footer links */
+    .auth-footer { text-align: center; font-size: 0.84rem; color: var(--text-faint); margin-top: 1.4rem; }
+    .auth-footer a { color: var(--olive); font-weight: 600; text-decoration: none; border-bottom: 1px solid rgba(96,88,63,0.2); transition: border-color 130ms ease; }
+    .auth-footer a:hover { border-color: var(--olive); }
 
-    .auth-footer a {
-      color: var(--olive);
-      font-weight: 600;
-      text-decoration: none;
-      border-bottom: 1px solid rgba(96,88,63,0.2);
-    }
-
-    @media (max-width: 480px) {
-      .auth-card { padding: 2.2rem 1.4rem; }
-      .auth-card h1 { font-size: 1.7rem; }
-    }
-  </style>
+    .auth-legal { text-align: center; font-size: 0.75rem; color: var(--text-faint); padding: 1rem; line-height: 1.5; }
+</style>
 </head>
 <body>
 
@@ -183,12 +105,10 @@
           <label for="email">E-Mail</label>
           <input type="email" id="email" name="email" placeholder="ihre@email.de" required autocomplete="email" />
         </div>
-
         <div class="field">
           <label for="password">Passwort</label>
           <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password" />
         </div>
-
         <button type="submit" class="btn-submit">Anmelden</button>
       </form>
 
