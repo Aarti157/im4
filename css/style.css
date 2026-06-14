@@ -34,6 +34,14 @@ p {
   margin-top: 1em;
 }
 
+.hero-img {
+  width: 100%;
+  max-width: 460px;
+  height: auto;
+  border-radius: var(--radius-xl);
+  object-fit: cover;
+}
+
 
 .modal-overlay {
   position: fixed;
@@ -165,3 +173,5 @@ p {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+

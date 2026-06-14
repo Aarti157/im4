@@ -1,36 +1,300 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Welcome</title>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-    <h1>Welcome to IM4 Demo Page</h1>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YumYum</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream:       #F7ECCA;
+      --cream-dark:  #ede0b4;
+      --sand:        #B7AD8F;
+      --sand-border: rgba(183,173,143,0.3);
+      --olive:       #60583F;
+      --pink:        #F4B5D7;
+      --pink-hover:  #e899c8;
+      --pink-light:  rgba(244,181,215,0.18);
+      --blue:        #A8C9FF;
+      --blue-light:  rgba(168,201,255,0.22);
+      --text:        #2e2a1e;
+      --text-muted:  #60583F;
+      --text-faint:  #B7AD8F;
+      --white-card:  #fdfaf2;
+      --radius-md: 10px; --radius-lg: 16px; --radius-xl: 24px; --radius-pill: 9999px;
+      --shadow-card: 0 2px 10px rgba(96,88,63,0.09);
+      --shadow-drawer: -8px 0 36px rgba(60,50,20,0.13);
+      --font-serif: 'Libre Baskerville', Georgia, serif;
+      --font-sans: 'Inter', system-ui, sans-serif;
+      --transition: 150ms cubic-bezier(0.16,1,0.3,1);
+    }
+    html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+    body { font-family: var(--font-sans); background: var(--cream); color: var(--text); min-height: 100dvh; font-size: 1rem; line-height: 1.6; }
 
-    <div class="navigation">
-      <ul>
-        <li><a href="login.html">Login</a></li>
-        <li><a href="register.html">Register</a></li>
-        <li>
-          <a href="protected.html">Protected Page</a> (only visible when logged
-          in)
-        </li>
-      </ul>
-    </div>
+    /* NAV */
+    .nav { background: var(--cream); border-bottom: 1px solid var(--sand-border); padding: 0.9rem 2.5rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 200; }
+    .nav-logo { display: flex; align-items: center; gap: 5px; text-decoration: none; }
+    .logo-block { width: 26px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: var(--font-serif); font-weight: 700; font-size: .88rem; }
+    .logo-block.a { background: var(--pink); color: var(--olive); }
+    .logo-block.b { background: var(--blue); color: var(--olive); }
+    .logo-block.c { background: none; color: var(--olive); }
 
-    <div class="info">
-      <h2>About This Site</h2>
-      <p>This is a simple authentication demo that shows:</p>
-      <ul>
-        <li>User registration</li>
-        <li>User login</li>
-        <li>Protected content that's only visible to logged-in users</li>
-      </ul>
-      <p>
-        If you try to access the protected page without being logged in, you'll
-        be redirected to the login page.
-      </p>
+    /* Hamburger */
+    .hamburger { background: none; border: 1px solid var(--sand-border); border-radius: var(--radius-md); width: 40px; height: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; transition: background var(--transition); position: relative; z-index: 300; }
+    .hamburger:hover { background: var(--cream-dark); }
+    .hamburger span { display: block; width: 18px; height: 1.5px; background: var(--olive); border-radius: 2px; transition: transform 220ms ease, opacity 180ms ease; }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* Drawer backdrop */
+    .drawer-backdrop { position: fixed; inset: 0; background: rgba(48,40,20,0.32); backdrop-filter: blur(3px); z-index: 240; opacity: 0; pointer-events: none; transition: opacity 240ms ease; }
+    .drawer-backdrop.open { opacity: 1; pointer-events: all; }
+
+    /* Drawer */
+    .nav-drawer { position: fixed; top: 0; right: 0; width: min(340px, 90vw); height: 100dvh; background: var(--white-card); border-left: 1px solid var(--sand-border); box-shadow: var(--shadow-drawer); z-index: 250; transform: translateX(100%); transition: transform 290ms cubic-bezier(0.16,1,0.3,1); display: flex; flex-direction: column; padding: 1.6rem; overflow-y: auto; }
+    .nav-drawer.open { transform: translateX(0); }
+    .drawer-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
+    .drawer-brand { font-family: var(--font-serif); font-size: 1rem; font-weight: 700; color: var(--text); }
+    .drawer-section { margin-bottom: 1.6rem; }
+    .drawer-section-label { font-size: 0.67rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 0.6rem; padding-left: 0.1rem; }
+    .konto-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+    .konto-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.3rem; padding: 1rem 0.5rem; border-radius: var(--radius-lg); border: 1px solid var(--sand-border); text-decoration: none; background: var(--cream); transition: background var(--transition), border-color var(--transition); text-align: center; }
+    .konto-card:hover { background: var(--cream-dark); border-color: var(--sand); }
+    .konto-card-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.2rem; }
+    .konto-card-label { font-size: 0.8rem; font-weight: 600; color: var(--text); }
+    .konto-card-sub { font-size: 0.68rem; color: var(--text-faint); }
+    .konto-card.primary-card { background: var(--pink-light); border-color: rgba(244,181,215,0.4); }
+    .konto-card.primary-card:hover { background: rgba(244,181,215,0.32); border-color: var(--pink); }
+    .drawer-divider { border: none; border-top: 1px solid var(--sand-border); margin: 0.6rem 0 1rem; }
+    .drawer-nav { display: flex; flex-direction: column; gap: 0.1rem; }
+    .drawer-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0.8rem; border-radius: var(--radius-md); text-decoration: none; font-size: 0.9rem; font-weight: 500; color: var(--text-muted); transition: background var(--transition), color var(--transition); }
+    .drawer-link:hover { background: var(--cream); color: var(--text); }
+    .drawer-link-icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--sand); }
+    .drawer-footer { margin-top: auto; padding-top: 1.2rem; border-top: 1px solid var(--sand-border); font-size: 0.73rem; color: var(--text-faint); }
+
+    /* HERO */
+    .hero { padding: 5rem 2.5rem 4rem; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; min-height: 85vh; }
+    .hero-h1 { font-family: var(--font-serif); font-size: clamp(2.2rem, 3.5vw, 3.4rem); font-weight: 700; line-height: 1.12; color: var(--text); margin-bottom: 1.5rem; letter-spacing: -0.01em; }
+    .hero-p { font-size: 1rem; color: var(--text-muted); max-width: 46ch; line-height: 1.7; margin-bottom: 2.2rem; }
+    .hero-btns { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+    .btn-primary { background: var(--pink); color: var(--olive); border: none; border-radius: var(--radius-md); padding: 0.75rem 1.6rem; font-family: var(--font-sans); font-size: 0.92rem; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: background var(--transition), transform 120ms ease; }
+    .btn-primary:hover { background: var(--pink-hover); transform: translateY(-1px); }
+    .btn-secondary { background: none; color: var(--olive); border: 1px solid rgba(96,88,63,0.3); border-radius: var(--radius-md); padding: 0.75rem 1.6rem; font-family: var(--font-sans); font-size: 0.92rem; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-block; transition: background var(--transition); }
+    .btn-secondary:hover { background: var(--cream-dark); }
+    .hero-right { display: flex; align-items: center; justify-content: center; }
+    .hero-img { width: 100%; max-width: 460px; height: auto; border-radius: 24px; object-fit: cover; }
+    .hero-card { width: 100%; max-width: 380px; aspect-ratio: 4/3; background: var(--white-card); border-radius: var(--radius-xl); border: 1px solid var(--sand-border); box-shadow: var(--shadow-card); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.2rem; padding: 2rem; }
+    .hero-card-title { font-family: var(--font-serif); font-size: 0.95rem; font-weight: 700; color: var(--text); text-align: center; }
+    .feedback-pills { display: flex; gap: 0.6rem; }
+    .pill { padding: 0.45rem 1rem; border-radius: var(--radius-pill); font-size: 0.8rem; font-weight: 600; border: 1px solid transparent; }
+    .pill.good    { background: var(--pink-light); border-color: rgba(244,181,215,0.5); color: var(--olive); }
+    .pill.neutral { background: rgba(183,173,143,0.2); border-color: var(--sand-border); color: var(--olive); }
+    .pill.bad     { background: var(--blue-light); border-color: rgba(168,201,255,0.4); color: var(--olive); }
+
+    /* BANNER */
+    .section-knopf { background: var(--sand); padding: 4rem 2.5rem; text-align: center; }
+    .section-knopf h2 { font-family: var(--font-serif); font-size: clamp(1.5rem,2.5vw,2.1rem); font-weight: 700; color: var(--white-card); max-width: 640px; margin: 0 auto; line-height: 1.25; }
+
+    /* FEATURES */
+    .section-features { padding: 4rem 2.5rem; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .feature-card { background: var(--white-card); border: 1px solid var(--sand-border); border-radius: var(--radius-xl); padding: 2.2rem; box-shadow: var(--shadow-card); }
+    .feature-dot { width: 10px; height: 10px; border-radius: 50%; margin-bottom: 1.4rem; }
+    .feature-dot.pink-dot { background: var(--pink); }
+    .feature-dot.blue-dot { background: var(--blue); }
+    .feature-card h3 { font-family: var(--font-serif); font-size: 1.15rem; font-weight: 700; color: var(--text); margin-bottom: 0.7rem; }
+    .feature-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1.2rem; }
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; }
+    .feature-list li { font-size: 0.84rem; color: var(--text-muted); display: flex; align-items: flex-start; gap: 0.5rem; }
+    .feature-list li::before { content: "—"; color: var(--text-faint); flex-shrink: 0; }
+
+    /* ÜBER UNS */
+    .section-about { padding: 5rem 2.5rem; max-width: 680px; margin: 0 auto; text-align: center; }
+    .section-about h2 { font-family: var(--font-serif); font-size: clamp(1.4rem,2.2vw,1.9rem); font-weight: 700; color: var(--text); margin-bottom: 1.2rem; }
+    .section-about p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.75; }
+
+    /* KONTAKT */
+    .section-kontakt { padding: 3rem 2.5rem 6rem; max-width: 520px; margin: 0 auto; text-align: center; }
+    .section-kontakt h2 { font-family: var(--font-serif); font-size: clamp(1.4rem,2.2vw,1.9rem); font-weight: 700; color: var(--text); margin-bottom: 0.8rem; }
+    .section-kontakt p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1.8rem; }
+    .btn-contact { display: inline-block; background: var(--olive); color: var(--cream); text-decoration: none; border-radius: var(--radius-md); padding: 0.75rem 1.8rem; font-size: 0.9rem; font-weight: 500; transition: background var(--transition); }
+    .btn-contact:hover { background: #4a4230; }
+
+    footer { text-align: center; padding: 2rem; font-size: 0.78rem; color: var(--text-faint); border-top: 1px solid var(--sand-border); }
+
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; padding: 3rem 1.5rem; }
+      .hero-right { display: none; }
+      .section-features { grid-template-columns: 1fr; padding: 2.5rem 1.5rem; }
+      .nav { padding: 0.8rem 1.5rem; }
+      .section-knopf { padding: 2.5rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+
+<!-- DRAWER -->
+<aside class="nav-drawer" id="navDrawer" role="dialog" aria-modal="true" aria-label="Navigation">
+  <div class="drawer-top">
+    <span class="drawer-brand">YumYum</span>
+    <button class="hamburger open" id="drawerClose" aria-label="Menü schliessen">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="drawer-section">
+    <p class="drawer-section-label">Mein Konto</p>
+    <div class="konto-cards">
+      <a href="login.html" class="konto-card primary-card">
+        <div class="konto-card-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--olive)"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        </div>
+        <span class="konto-card-label">Anmelden</span>
+        <span class="konto-card-sub">Login</span>
+      </a>
+      <a href="register.html" class="konto-card">
+        <div class="konto-card-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--olive)"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+        </div>
+        <span class="konto-card-label">Registrieren</span>
+        <span class="konto-card-sub">Neu dabei?</span>
+      </a>
     </div>
-  </body>
+  </div>
+
+  <hr class="drawer-divider">
+
+  <div class="drawer-section">
+    <p class="drawer-section-label">Seiten</p>
+    <nav class="drawer-nav">
+      <a href="#wie-es-funktioniert" class="drawer-link" onclick="closeDrawer()">
+        <svg class="drawer-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        So funktioniert's
+      </a>
+      <a href="#vorteile" class="drawer-link" onclick="closeDrawer()">
+        <svg class="drawer-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Vorteile
+      </a>
+      <a href="#ueber-uns" class="drawer-link" onclick="closeDrawer()">
+        <svg class="drawer-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Über uns
+      </a>
+      <a href="#kontakt" class="drawer-link" onclick="closeDrawer()">
+        <svg class="drawer-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Kontakt
+      </a>
+    </nav>
+  </div>
+
+  <div class="drawer-footer">© 2026 YumYum · Mit Sorgfalt gemacht</div>
+</aside>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo" aria-label="YumYum">
+    <div class="logo-block a">Y</div>
+    <div class="logo-block b">u</div>
+    <div class="logo-block c">m</div>
+    <div class="logo-block a">Y</div>
+    <div class="logo-block b">u</div>
+    <div class="logo-block c">m</div>
+  </a>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navDrawer">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <h1 class="hero-h1">Eine einfache Möglichkeit, Kinderpräferenzen sichtbar zu machen</h1>
+    <p class="hero-p">Kinder bewerten Mahlzeiten mit einfachen physischen Tasten. Die Ergebnisse werden für Eltern und Betreuende in einer sicheren Web-App visualisiert.</p>
+    <div class="hero-btns">
+      <a href="login.html" class="btn-primary">Kostenlos starten</a>
+      <a href="#wie-es-funktioniert" class="btn-secondary">Mehr erfahren</a>
+    </div>
+  </div>
+<div class="hero-right">
+  
+<img src="img/kids_startseite.png" alt="" class="hero-img" />
+
+  </div>
+</section>
+
+<!-- SO FUNKTIONIERT'S -->
+<section class="section-knopf" id="wie-es-funktioniert">
+  <h2>Von einem Knopfdruck zur besseren Menüplanung</h2>
+</section>
+
+<!-- VORTEILE -->
+<section class="section-features" id="vorteile">
+  <div class="feature-card">
+    <div class="feature-dot pink-dot"></div>
+    <h3>Physisches Gerät</h3>
+    <p>Kinderfreundliche Tasten an Essensplätzen. Einfach, haptisch und intuitiv. Kinder drücken ihre Wahl nach dem Essen und lassen ihre Stimme auf spielerische Weise hören.</p>
+    <ul class="feature-list">
+      <li>Drei klare Optionen: Yum, Naja, Nicht Yum</li>
+      <li>Sofortiges drahtloses Feedback via WLAN</li>
+      <li>Langlebig und leicht zu reinigen</li>
+    </ul>
+  </div>
+  <div class="feature-card">
+    <div class="feature-dot blue-dot"></div>
+    <h3>Web-App</h3>
+    <p>Sicheres Dashboard für Eltern und Betreuende. Klare Datenvisualisierungen zeigen Muster, Trends und Präferenzen im Zeitverlauf mit Klarheit und Sorgfalt.</p>
+    <ul class="feature-list">
+      <li>Echtzeit-Tracking von Essensfeedback</li>
+      <li>Trendanalysen und Einblicke</li>
+      <li>Optional kinderspezifische Präferenzen</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ÜBER UNS -->
+<section class="section-about" id="ueber-uns">
+  <h2>Über uns</h2>
+  <p>YumYum entstand aus dem Wunsch, die Stimmen von Kindern bei der Menüplanung sichtbar zu machen — einfach, spielerisch und zuverlässig. Wir sind ein kleines Team, das Technologie mit Menschlichkeit verbindet.</p>
+</section>
+
+<!-- KONTAKT -->
+<section class="section-kontakt" id="kontakt">
+  <h2>Kontakt</h2>
+  <p>Fragen, Feedback oder Interesse an einer Demo? Wir freuen uns von dir zu hören.</p>
+  <a href="mailto:hallo@yumyum.ch" class="btn-contact">hallo@yumyum.ch</a>
+</section>
+
+<footer>© 2026 YumYum. Mit Sorgfalt für Kinder und Betreuende gemacht.</footer>
+
+<script>
+  const hamburgerBtn = document.getElementById("hamburgerBtn");
+  const drawerClose  = document.getElementById("drawerClose");
+  const navDrawer    = document.getElementById("navDrawer");
+  const backdrop     = document.getElementById("drawerBackdrop");
+
+  function openDrawer() {
+    navDrawer.classList.add("open");
+    backdrop.classList.add("open");
+    hamburgerBtn.classList.add("open");
+    hamburgerBtn.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+  }
+  function closeDrawer() {
+    navDrawer.classList.remove("open");
+    backdrop.classList.remove("open");
+    hamburgerBtn.classList.remove("open");
+    hamburgerBtn.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+  }
+
+  hamburgerBtn.addEventListener("click", openDrawer);
+  drawerClose.addEventListener("click", closeDrawer);
+  backdrop.addEventListener("click", closeDrawer);
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeDrawer(); });
+</script>
+</body>
 </html>

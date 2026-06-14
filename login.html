@@ -1,27 +1,203 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Login</title>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-    <h1>Login</h1>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YumYum – Anmelden</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream:       #F7ECCA;
+      --cream-dark:  #ede0b4;
+      --sand:        #B7AD8F;
+      --sand-border: rgba(183,173,143,0.30);
+      --olive:       #60583F;
+      --olive-hover: #4a4230;
+      --pink:        #F4B5D7;
+      --pink-hover:  #e899c8;
+      --pink-light:  rgba(244,181,215,0.25);
+      --white-card:  #fdfaf2;
+      --text:        #2e2a1e;
+      --text-muted:  #60583F;
+      --text-faint:  #B7AD8F;
+      --radius-md:   10px;
+      --radius-lg:   16px;
+      --radius-xl:   24px;
+      --radius-pill: 9999px;
+      --shadow-card: 0 4px 24px rgba(96,88,63,0.10);
+      --font-serif:  'Libre Baskerville', Georgia, serif;
+      --font-sans:   'Inter', system-ui, sans-serif;
+    }
 
-    <form id="loginForm">
-      <div>
-        <label>Email</label>
-        <input type="email" id="email" required />
+    html { -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100dvh;
+      font-size: 1rem;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 1.4rem 1.6rem 0;
+      transition: color 130ms ease;
+    }
+
+    .back-link:hover { color: var(--olive); }
+
+    .auth-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    .auth-card {
+      background: var(--white-card);
+      border-radius: var(--radius-xl);
+      padding: 2.8rem 2.4rem;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .auth-card h1 {
+      font-family: var(--font-serif);
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--text);
+      text-align: center;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    .auth-sub {
+      font-size: 0.88rem;
+      color: var(--text-faint);
+      text-align: center;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    .field { margin-bottom: 1.2rem; }
+
+    .field label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.45rem;
+    }
+
+    .field input {
+      width: 100%;
+      background: var(--cream);
+      border: 1.5px solid var(--sand-border);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem;
+      font-family: var(--font-sans);
+      font-size: 0.92rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 140ms ease, box-shadow 140ms ease;
+    }
+
+    .field input::placeholder { color: var(--text-faint); }
+
+    .field input:focus {
+      border-color: var(--pink);
+      box-shadow: 0 0 0 3px rgba(244,181,215,0.22);
+    }
+
+    .btn-submit {
+      display: block;
+      width: 100%;
+      background: var(--pink);
+      color: var(--olive);
+      border: none;
+      border-radius: var(--radius-pill);
+      padding: 0.85rem;
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      margin-top: 1.4rem;
+      transition: background 140ms ease, transform 120ms ease;
+    }
+
+    .btn-submit:hover {
+      background: var(--pink-hover);
+      transform: translateY(-1px);
+    }
+
+    .auth-footer {
+      text-align: center;
+      font-size: 0.84rem;
+      color: var(--text-faint);
+      margin-top: 1.4rem;
+    }
+
+    .auth-footer a {
+      color: var(--olive);
+      font-weight: 600;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(96,88,63,0.2);
+    }
+
+    @media (max-width: 480px) {
+      .auth-card { padding: 2.2rem 1.4rem; }
+      .auth-card h1 { font-size: 1.7rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Zurück zur Startseite
+  </a>
+
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <h1>Willkommen zurück</h1>
+      <p class="auth-sub">Melden Sie sich an, um auf Ihr Dashboard zuzugreifen</p>
+
+      <form id="loginForm">
+        <div class="field">
+          <label for="email">E-Mail</label>
+          <input type="email" id="email" name="email" placeholder="ihre@email.de" required autocomplete="email" />
+        </div>
+
+        <div class="field">
+          <label for="password">Passwort</label>
+          <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password" />
+        </div>
+
+        <button type="submit" class="btn-submit">Anmelden</button>
+      </form>
+
+      <div class="auth-footer">
+        Noch kein Konto? <a href="register.html">Jetzt registrieren</a>
       </div>
-      <div>
-        <label>Password</label>
-        <input type="password" id="password" required />
-      </div>
-      <button type="submit">Login</button>
-    </form>
+    </div>
+  </div>
 
-    <p>Don’t have an account? <a href="register.html">Register here</a>.</p>
-
-    <script src="js/login.js"></script>
-  </body>
+  <script src="js/login.js"></script>
+</body>
 </html>
