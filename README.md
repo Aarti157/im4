@@ -36,7 +36,7 @@ In diesem Teil werden die gemeinsamen Schritte aus der UX-Abgabe dokumentiert, d
 •⁠  ⁠*WebApp:* [Link zur Website](https://im4.potterai.ch/)
 •⁠  ⁠*Video-Dokumentation:* [Link zum Video auf Youtube](XXXXXXXXXXXX) 
 
-#### Installationsanleitung WebApp (Aarti + Kae)
+#### Installationsanleitung WebApp 
 
 #### Infrastruktur
 
@@ -145,57 +145,87 @@ Steckplan
 
 ## technische Details (Kae & Aarti)
 
-In diesem Abschnitt wird die softwareseitige Architektur, die Datenbeziehung und der genaue Kommunikationsfluss zwischen dem physischen Terminal (Physical Computing) und der Web-App (Backend/Frontend) aufgeschlüsselt.
+Die Datenbankstruktur wurde im Verlauf des Projekts mehrfach überarbeitet, um technische Probleme zu lösen und die Anforderungen besser abzubilden.
 
+### Initiale Struktur und erstes Problem
 
+Die erste Version sah für die Tabelle `gericht_device_zeit` drei separate Spalten `good`, `neutral` und `bad` als Integer-Zähler vor. Pro Gericht existierte damit eine einzige Zeile, die alle Bewertungen aufsummiert speicherte. Diese Struktur hatte einen entscheidenden Nachteil: Einzelne Bewertungen waren nicht mehr zeitlich rekonstruierbar, nachträgliche Analysen nach Tageszeit oder Zeitraum waren damit unmöglich.
+<img src="assets/datenbank_aufbau.jpeg" alt="datenbank aufbauf" width="500">
 
+### Umstieg auf Einzelbewertungen
+
+Die Spalten `good`, `neutral` und `bad` wurden deshalb durch eine einzige Spalte `bewertung` ersetzt. Jeder einzelne Knopfdruck auf das Physical-Computing-Gerät erzeugt neu eine eigene Zeile in `gericht_device_zeit`. Die Bewertungswerte wurden als `0` (Schlecht), `1` (Neutral) und `2` (Gut) definiert. Als Datentyp wurde `TINYINT UNSIGNED` gewählt, da dieser negative Werte auf Datenbankebene ausschliesst und sehr platzsparend ist. Gleichzeitig wurde die Tabelle `mahlzeit` aus der ursprünglichen Planung gestrichen, da die zeitliche Zuordnung nun vollständig über den automatisch gesetzten `timestamp` erfolgt. 
+
+### Erweiterung der Gerichtetabelle
+
+Die Tabelle `gerichte` wurde in einer weiteren Iteration um ein `date`-Feld sowie sieben boolesche Diätattribute ergänzt (`vegan`, `vegetarisch`, `pescetarisch`, `glutenfrei`, `laktosefrei`, `zuckerfrei`, `sojafrei`), die jeweils als `TINYINT(1)` mit Standardwert `0` angelegt sind. Das Datumsfeld wurde dabei nicht nur für die Anzeige benötigt, sondern erwies sich später als zentraler Verknüpfungsschlüssel.
+
+### Das Problem mit der gericht_id und die Lösung über das Datum
+
+Das grösste technische Problem entstand durch die Funktionsweise des Physical-Computing-Geräts: Es sendete bei jedem Klick zwar eine Bewertung, aber keine `gericht_id`. In der Datenbank stand deshalb in der Spalte `gericht_id` bei nahezu allen Einträgen der Wert `0`, was eine direkte Verknüpfung zwischen Bewertungen und Gerichten über einen Fremdschlüssel unmöglich machte.
+
+Die Lösung bestand darin, den JOIN in `api/gerichte.php` von einer ID-basierten auf eine datumsbasierte Verknüpfung umzustellen. Anstatt `g.id = gdz.gericht_id` wird nun `DATE(gdz.timestamp) = g.date` verwendet. Die SQL-Funktion `DATE()` extrahiert dabei den Datumsteil aus dem vollständigen Timestamp und vergleicht ihn mit dem `date`-Feld des entsprechenden Gerichts. Da pro Tag pro Kindergarten genau ein Gericht erfasst wird, ist das Datum ein eindeutiger Verknüpfungsschlüssel. Diese Anpassung erforderte ausschliesslich eine Änderung im PHP-Query – weder die Datenbankstruktur noch das Frontend mussten angepasst werden. Als Limitation gilt: Sollten künftig mehrere Gerichte pro Tag erfasst werden, müsste das Gerät eine `gericht_id` mitsenden.
 
 
 ### Projektstruktur / Code-Struktur
 
-Der Code ist als klassische PHP/JavaScript-Web-Applikation aufgebaut und wird über SFTP auf einem externen Infomaniak-Server deployed. Die Verzeichnisstruktur folgt einer klaren Trennung zwischen Frontend und Backend: Im Ordner `api/` liegen alle serverseitigen PHP-Endpunkte (`login.php`, `logout.php`, `register.php`, `protected.php`, `gerichte.php`, `gericht_erfassen.php`, `woche.php`). JavaScript-Files befinden sich im Ordner `js/`, Stylesheets in `css/` und die Datenbankverbindung sowie Konfiguration in `im4/system/config.php`. Die HTML-Seiten (`index.html`, `login.html`, `register.html`, `protected.html`, `gerichte.html`) liegen im Root-Verzeichnis. Die SFTP-Verbindungskonfiguration für das Deployment via Visual Studio Code ist in `.vscode/sftp.json` hinterlegt.
-
-Als Technologie-Stack kommen HTML, CSS und JavaScript mit der Fetch API im Frontend zum Einsatz. Das Backend basiert auf PHP mit JSON-Responses, die Datenbank auf MariaDB, gehostet bei Infomaniak. Das Deployment erfolgt manuell per SFTP-Extension in Visual Studio Code.
-
-Die Struktur wurde so gewählt, weil sie eine klare Trennung zwischen Frontend (HTML, CSS, JS) und Backend (PHP-API) schafft und damit die Übersicht und Wartbarkeit des Codes vereinfacht. Da jede Seite ein eigenes JavaScript-File besitzt, lassen sich Fehler schnell einem bestimmten Bereich zuordnen, ohne dass man sich durch eine grosse, zusammenhängende Codebasis arbeiten muss.
-
-
-
-
-YumYum-Feedback/
+/                               ← Web-Root
 │
-├── index.php                 # Startseite / Login-Maske für Betreuungspersonen
-├── dashboard.php             # Hauptseite: Auswertung der Menü-Akzeptanz (Kalenderansicht)
-├── load.php                  # API: Empfängt JSON-Daten vom Terminal und schreibt sie in die DB
+├── index.html                  ← Landingpage / Startseite der App
+├── login.html                  ← Login-Seite
+├── register.html               ← Registrierungs-Seite
+├── dashboard.html              ← Hauptseite: Wochenübersicht & Gericht erfassen
+├── gerichte.html               ← Gesamtübersicht aller erfassten Gerichte
+├── protected.html              ← Geschützte Seite (nur für eingeloggte User)
+├── sender.html                 ← Schnittstelle / Simulation des physischen Geräts
+├── kontakt.html                ← Kontaktseite
+├── ueber_uns.html              ← Über uns Seite
 │
 ├── css/
-│   ├── style.css             # Allgemeines Layout und Design der Web-App
-│   └── dashboard.css         # Spezifische Styles für die Kalender- und Diagramm-Visualisierung
+│   └── style.css               ← Globales Styling für alle Seiten
+│
+├── js/
+│   ├── dashboard.js            ← Wochenübersicht laden, Gericht erfassen, Bewertungs-Modal
+│   ├── gerichte.js             ← Alle Gerichte mit Bewertungen laden und anzeigen
+│   ├── login.js                ← Login-Formular, Session starten, Weiterleitung
+│   ├── logout.js               ← Session beenden, Weiterleitung zur Loginseite
+│   ├── protected.js            ← Auth-Check, User-Infos anzeigen
+│   ├── register.js             ← Registrierungs-Formular, User anlegen
+│   └── sender.js               ← Bewertung vom Gerät an API senden (POST)
 │
 ├── api/
-│   ├── auth/
-│   │   ├── login.php         # Verarbeitet den Login der Betreuungspersonen
-│   │   ├── logout.php        # Beendet die Session und meldet den User ab
-│   │   └── check_auth.php    # Prüft den Session-Status ("Bin ich eingeloggt?")
-│   │
-│   └── ratings/
-│       └── get_monthly.php   # Lädt die aggregierten Abstimmungsdaten für den Dashboard-Kalender
-│
-├── system/
-│   ├── config.php            # Zentrale Datenbank-Zugangsdaten (In .gitignore hinterlegt!)
-│   └── db_structure.sql      # SQL-Dump für die Tabellenstruktur
-│
-└── mc.ino
-                              # ESP32-C6 Firmware (WLAN-Anbindung, Debounce, Spam-Schutz & HTTP-POST)
+│   ├── login.php               ← Session starten, Passwort prüfen (bcrypt)
+│   ├── logout.php              ← Session zerstören
+│   ├── register.php            ← Neuen User in DB speichern
 
 ### Datenschnittstelle (Weg der Daten)
 •⁠  ⁠*Physical Computing:* Ein Kind drückt einen Metall-Taster $\rightarrow$ Der ESP32-C6 validiert den Klick (Entprellung + Spam-Schutz) $\rightarrow$ Der Controller generiert mittels ⁠ Arduino_JSON ⁠ die Payload und sendet einen ⁠ HTTP-POST ⁠-Request mit dem Header ⁠ Content-Type: application/json ⁠ an das Backend.
-•⁠  ⁠*WebApp:* Die API-Schnittstelle ⁠ load.php ⁠ nimmt den Request entgegen, decodiert den JSON-String per ⁠ json_decode() ⁠ und speichert die Daten persistent per SQL-⁠ INSERT ⁠ in die Datenbank.
+•⁠  ⁠*WebApp:* Das Physical-Computing-Gerät verfügt über drei physische Knöpfe für die Bewertungsoptionen Gut (`2`), Neutral (`1`) und Schlecht (`0`). Bei jedem Knopfdruck sendet das Gerät einen HTTP-POST-Request an den Server. Der Timestamp wird serverseitig automatisch via `DEFAULT current_timestamp()` gesetzt, sodass das Gerät selbst keine Zeitinformation senden muss. Die `device_id` ist auf dem Gerät fest hinterlegt und entspricht einem Eintrag in der `device`-Tabelle, der dem jeweiligen Kindergarten zugeordnet ist. Die Zuordnung der eingehenden Bewertungen zum richtigen Gericht erfolgt – wie oben beschrieben – über den Datumsvergleich zwischen `timestamp` und `date`.
+
+## ScreenFlow
+
+Neue Benutzer registrieren sich über `register.html` mit E-Mail, Name, Passwort sowie der Auswahl von Rolle und Organisation aus je einem Dropdown. Die Dropdown-Werte entsprechen den `id`-Einträgen der Tabellen `rollen` und `organisation` und werden als `rollen_id` und `orga_id` in der `users`-Tabelle gespeichert. Das JavaScript-File `register.js` sendet alle Formularfelder per `fetch()` als `URLSearchParams` an `api/register.php`, welches die Eingaben validiert, die E-Mail auf Duplikate prüft und das Passwort mit `password_hash()` (bcrypt) hasht.
+
+Nach dem Login landet der Benutzer auf dem Dashboard (`protected.html`), das eine Wochenübersicht von Montag bis Freitag mit den erfassten Gerichten anzeigt. Erzieher:innen können über einen Button ein neues Gericht für ein beliebiges Datum erfassen – das Formular öffnet sich als Modal. Ein Klick auf einen beliebigen Tag der Wochenansicht öffnet ein weiteres Modal mit den aggregierten Bewertungen dieses Tages: Anzahl Gut-, Neutral- und Schlecht-Bewertungen sowie die Gesamtanzahl. Die Seite `gerichte.html` zeigt eine vollständige Liste aller Gerichte mit Bewertungsstatistik inklusive absoluter Zahlen und Prozentwerten.
+
+## Reproduzierbarkeit
+
+Zur Reproduktion werden PHP 7.4 oder höher, MariaDB/MySQL sowie ein Webserver mit SFTP-Zugang benötigt. Alternativ funktioniert eine lokale XAMPP- oder MAMP-Umgebung.
+
+Als erstes wird eine neue Datenbank angelegt und die SQL-Dumps der Tabellen importiert – dabei muss die Reihenfolge `rollen` → `organisation` → `device` → `users` → `gerichte` → `gericht_device_zeit` eingehalten werden, da Fremdschlüsselbeziehungen bestehen. Anschliessend werden in `system/config.php` die Datenbankverbindungsdaten (Host, Datenbankname, Benutzername, Passwort) eingetragen. Alle Projektfiles werden per SFTP auf den Server hochgeladen, wobei die Ordnerstruktur exakt beibehalten werden muss, da alle API-Aufrufe relative Pfade verwenden. Nach dem Hochladen kann über `register.html` ein erster Benutzer angelegt werden. Damit das Physical-Computing-Gerät Bewertungen senden kann, muss seine `device_id` in der `device`-Tabelle eingetragen und der korrekten Organisation zugeordnet sein.
+
+Alle API-Endpunkte prüfen bei jeder Anfrage die aktive Session. Nicht eingeloggte Anfragen erhalten eine `401 Unauthorized`-Antwort und werden im Frontend automatisch auf `login.html` weitergeleitet.
+
+
+Für die Installation der WebApp brauchst du einen Webserver mit PHP, eine MySQL-Datenbank sowie die Projektdateien in der bestehenden Ordnerstruktur mit  api ,  js ,  css ,  system  und den HTML-Dateien im Hauptverzeichnis. Die Anwendung verwendet PHP-Sessions für den Login und PDO für die Datenbankverbindung, deshalb müssen sowohl PHP als auch eine SQL-Datenbank verfügbar sein.
+
+
 
 ### Known Bugs
 
 Im ursprünglichen Fritzing-Steckplan (Steckschema.jpeg) wurden die Taster gegen GND verdrahtet und der LED-Ring fälschlicherweise über einen GPIO-Pin gespeist. Beim realen Prototypen-Bau wurde dies korrigiert: Die Taster hängen an 3.3V (wegen INPUT_PULLDOWN) und der LED-Ring wird stabil über den 5V-Pin (VBUS) versorgt.
 
-
+Bilder werden auf der Website nicht angezeigt
+Einige Bilder konnten auf der Live-Website nicht korrekt dargestellt werden. Die Ursache lag in den Dateipfaden: Die Bilder waren lokal vorhanden, wurden aber beim Upload via SFTP entweder nicht in den korrekten Ordner geladen oder die Pfadangaben im HTML stimmten nicht mit der tatsächlichen Ordnerstruktur auf dem Server überein. Da die Behebung des Problems im verfügbaren Zeitrahmen nicht abgeschlossen werden konnte, wurden die betroffenen Bildstellen im finalen Stand der Website belassen. Eine mögliche Lösung wäre die Überprüfung aller src-Pfade im HTML sowie die Sicherstellung, dass der assets/-Ordner vollständig auf den Server hochgeladen wurde.
 
 
