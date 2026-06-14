@@ -38,10 +38,6 @@ In diesem Teil werden die gemeinsamen Schritte aus der UX-Abgabe dokumentiert, d
 
 #### Installationsanleitung WebApp (AARTI + KAE)
 
-Verständliche Schritt-für-Schritt-Anleitung für Aussenstehende, um das Projekt zu klonen und auf einem eigenen Server zu installieren.
-
-1.⁠ ⁠Was benötige ich an Infrastruktur? 2. Was muss ich auf meinem Webserver installieren? 3. Wie kann ich die Datenbank importieren? 4. Wo muss ich die DB-Credentials eintragen? 5. … 6. Wie nehme ich das physische Artefakt in Betrieb?
-
 #### Infrastruktur
 
 Folgende Infrastruktur wird benötigt:
