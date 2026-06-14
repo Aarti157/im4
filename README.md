@@ -3,35 +3,32 @@
 •⁠  ⁠*Modul:* Interaktive Medien 4 an der Fachhochschule Graubünden (FS26)  
 •⁠  ⁠*Themenfeld:* IoT-Applikation zum Thema Eltern mit kleinen Kindern  
 •⁠  ⁠*Name des Projekts:* YumYum Feedback  
-•⁠  ⁠*Team Physical Computing:* Lorena Simonelli & Sheyla Spiess
+•⁠  ⁠*Team Physical Computing:* Lorena Simonelli & Sheyla Spiess  
 •⁠  ⁠*Team WebApp:* Aarti Miescher & Tamara Kae Marzan
- 
- 
-* Welches Problem im Alltag von Eltern mit kleinen Kindern wird gelöst?*
-In Kitas und Familien ist es oft schwierig, objektives Feedback von Kleinkindern zum Essen zu erhalten. Verbale Kommunikation ist in diesem Alter oft unpräzise, und die tatsächliche Akzeptanz von Mahlzeiten bleibt für Eltern und Küchenpersonal unklar. Dies führt zu unnötigem Food Waste, da die Menüplanung nicht optimal auf die Bedürfnisse der Kinder abgestimmt ist.
 
-* Was ist der „Sinn und Zweck“ des Systems?*
+**Welches Problem im Alltag von Eltern mit kleinen Kindern wird gelöst?**
+In Kitas und Familien ist es oft schwierig, objektives Feedback von Kleinkindern zum Essen zu erhalten. Verbale Kommunikation ist in diesem Alter oft unpräzise und die tatsächliche Akzeptanz von Mahlzeiten bleibt für Eltern und Küchenpersonal unklar. Dies führt zu unnötigem Food Waste, da die Menüplanung nicht optimal auf die Bedürfnisse der Kinder abgestimmt ist.
+
+**Was ist der „Sinn und Zweck“ des Systems?**
 YumYum Feedback ist ein interaktives Feedbacksystem, das die Lücke zwischen kindlicher Erfahrung und erwachsener Datenanalyse schliesst. Durch ein haptisches Eingabegerät können Kinder spielerisch und autonom ihr Essen bewerten. Diese Daten werden digital aufbereitet, um die Kommunikation zwischen Kindern, Betreuungspersonen und Küche zu verbessern und Abfälle gezielt zu reduzieren.
-
-\[Bilder / GIFs (optional)\]
 
 ### UX & Konzeption
 
 In diesem Teil werden die gemeinsamen Schritte aus der UX-Abgabe dokumentiert, damit sich hier alles vollständig an einem Ort befindet (betrifft WebApp und Physical Computing)
 
 •⁠  ⁠*Figma:* https://www.figma.com/design/duhxVGTsO6L7Tl17rjWYhk/IM-4-%E2%80%93-App-Konzeption-Vorlage--Copy-?node-id=97-1136&t=HTVwNsrONgHQfIB7-1
-•⁠  ⁠*User Flow \+ Screen Flow*
-<img src="Userflow.jpeg">
+•⁠  ⁠*User Flow + Screen Flow:* <img src="Userflow.png" alt="User Flow" width="600">
 
-•⁠  ⁠Welche Features waren angedacht?
-•⁠  ⁠Echtzeit-Feedback: Visuelle Bestätigung am Gerät (LEDs) nach der Stimmabgabe.
-•⁠  ⁠Dashboard für Erwachsene: Visualisierung der Beliebtheit von Speisen über Zeiträume hinweg.
-•⁠  ⁠Daten-Schnittstelle: Automatisierte Übertragung der Klicks vom ESP32 an die Web-Datenbank.
+•⁠  ⁠*Welche Features waren angedacht?*
+  * Echtzeit-Feedback: Visuelle Bestätigung am Gerät (LEDs) nach der Stimmabgabe.
+  * Dashboard für Erwachsene: Visualisierung der Beliebtheit von Speisen über Zeiträume hinweg.
+  * Daten-Schnittstelle: Automatisierte Übertragung der Klicks vom ESP32 an die Web-Datenbank.
 
-•⁠  ⁠Welche Features wurden nicht umgesetzt? (Warum)
-•⁠  ⁠Drei grosse, robuste Buttons mit visuellen Icons. Wir haben uns für Schraubtaster entschieden. 
-•⁠  ⁠RFID-Identifikation: Wurde verworfen, um die Anonymität zu wahren und den Fokus auf das Gesamtfeedback der Gruppe zu legen (Datenschutz in Kitas).
+•⁠  ⁠*Welche Features wurden nicht umgesetzt? (Warum)*
+  * Drei grosse, robuste Buttons mit visuellen Icons: Wir haben uns im Prozess für mechanisch Metall-Schraubtaster entschieden. Die farbliche Zuordnung wird über das grafische Interface des Gehäuses gelöst.
+  * RFID-Identifikation: Wurde verworfen, um die Anonymität zu wahren und den Fokus auf das Gesamtfeedback der Gruppe zu legen (Datenschutz und vereinfachte Handhabung in Kitas).
 
+---
 
 ### Setup
 
@@ -40,47 +37,105 @@ In diesem Teil werden die gemeinsamen Schritte aus der UX-Abgabe dokumentiert, d
 
 #### Installationsanleitung WebApp (AARTI + KAE)
 
-**verständliche* Schritt-für-Schritt-Anleitung für Aussenstehende, um das Projekt zu klonen und auf einem eigenen Server zu installieren*
+Verständliche Schritt-für-Schritt-Anleitung für Aussenstehende, um das Projekt zu klonen und auf einem eigenen Server zu installieren.
 
-1.⁠ ⁠Was benötige ich an Infrastruktur?  
-2.⁠ ⁠Was muss ich auf meinem Webserver installieren?  
-3.⁠ ⁠Wie kann ich die Datenbank importieren?  
-4.⁠ ⁠Wo muss ich die DB-Credentials eintragen?  
-5.⁠ ⁠…  
-6.⁠ ⁠Wie nehme ich das physische Artefakt in Betrieb?
+1.⁠ ⁠Was benötige ich an Infrastruktur? 2. Was muss ich auf meinem Webserver installieren? 3. Wie kann ich die Datenbank importieren? 4. Wo muss ich die DB-Credentials eintragen? 5. … 6. Wie nehme ich das physische Artefakt in Betrieb?
 
 #### Bauanleitung Physical Computing (Lorena + Sheyla)
 
-•⁠  ⁠**Was muss ich wie bauen, verbinden, installieren?**  
-•⁠  ⁠ergänze: **Komponentenplan* (betrifft Physical Computing, vgl. Slides Kapitel 15): Schaubild enthält*  
-  * die eingesetzten Komponenten  
-  * die verbundenen Sensoren und Aktoren  
-  * die Programme (mit Dateinamen)  
-  * die Kommunikationswege  
-•⁠  ⁠ergänze: **Steckplan* (betrifft Physical Computing, vgl. Slides Kapitel 15): generiert z.B. mit Fritzing (empfohlen), Tinkercad, Wokwi*  
-  * beachtet die [Fritzing Parts](https://github.com/Interaktive-Medien/im_physical_computing/tree/main/15_Intro_Projektdoku) extra für euch  
-•⁠  ⁠ggf. **Bildmaterial**
+Was muss ich wie bauen, verbinden, installieren?
+Wir müssen es schaffen, dass ein haptischer Tastendruck am Terminal fehlerfrei registriert wird, der integrierte LED-Ring darauf visuell reagiert und das entsprechende Feedback-Signal per WLAN an die Web-Datenbank übermittelt wird. Das Signal muss dann einer Device-ID und einem Status zugewiesen werden, damit es für die Menüplanung weiterverarbeitet werden kann.
 
-<img src="Steckschema.jpeg">
+*Komponentenplan*
+
+Die eingesetzten Komponenten:
+
+•⁠  ⁠Mikrocontroller-Board: ESP32-C6 N8 ← Verarbeitet die Eingangssignale der Taster, steuert den LED-Ring und sendet sie über das integrierte WLAN-Modul an den Webserver.
+•⁠  ⁠Eingabe-Elemente: 3x Metall-Drucktaster ← Mechanisch Schraubtaster, welche die Interaktion der Kinder abfangen.
+•⁠  ⁠Visuelle Ausgabe: WS2812B RGB-LED-Ring ← 12-Segment-Ring, der im Standby als dreigeteilte Ampelanzeige dient und bei Klick eine optische Bestätigung ausgibt.
+•⁠  ⁠Stromversorgung: USB-Kabel mit 5V ← Liefert die nötige elektrische Energie für den stabilen Betrieb der Hardware und des LED-Rings.
+•⁠  ⁠Prototyping-Plattform: Steckplatte ← Ermöglicht das lötfreie Aufstecken, Fixieren und elektrische Verschalten der Bauteile.
+•⁠  ⁠Verbindungsleitungen: Jumperkabel ← Verbinden die Pins der Komponenten flexibel mit der Steckplatte.
+
+Visualisierung Komponentenplan: XXX
+
+Die verbundenen Sensoren und Aktoren:
+
+Sensoren:
+•⁠  ⁠3x Metall-Drucktaster: Fungieren als digitale Sensoren. Sie schliessen bei Betätigung den Stromkreis und legen ein Schaltsignal an den jeweiligen GPIO-Pin, sobald ein Kind abstimmt.
+
+Aktoren:
+•⁠  ⁠WS2812B LED-Ring (12 Segmente): Fungiert als physischer Aktor. Gesteuert durch die Datei terminal.ino setzt er die Programmbefehle in eine physikalische Aktion um, indem er die passende Lichtfarbe (Grün, Gelb, Rot) als direktes Feedback aufleuchten lässt.
+
+Die Programme (mit Dateinamen):
+
+•⁠  ⁠terminal.ino ← Läuft auf dem ESP32-C6. Liest den Status der Taster aus, entprellt das Signal, steuert den LED-Ring an und sendet die Daten per HTTP-POST an den Webserver
+•⁠  ⁠load.php ← Empfängt die JSON-Daten vom ESP32 per HTTP und schreibt den Bewertungswert per SQL in die Datenbank
+•⁠  ⁠config.php ← Zentrale Konfigurationsdatei; stellt die Datenbankverbindung für alle PHP-Dateien bereit
+•⁠  ⁠dashboard.php ← Frontend-Seite (Kalenderansicht), auf der die aggregierten Ergebnisse für die Betreuungspersonen visualisiert werden
+
+Die Kommunikationswege:
+
+Metall-Drucktaster ⇄ Microcontrollerboard ESP32-C6-N8
+•⁠  ⁠Weg: Kabelgebunden über die Jumperkabel auf der Steckplatte
+•⁠  ⁠Protokoll: Digitales Schaltsignal (3.3V über INPUT_PULLDOWN-Schaltung)
+•⁠  ⁠Daten: Der Tastendruck aktiviert den jeweiligen GPIO-Pin (4 = Gut, 5 = Neutral, 6 = Schlecht)
+
+Microcontrollerboard ESP32-C6-N8 ⇄ WS2812B LED-Ring
+•⁠  ⁠Weg: Kabelgebunden über ein Daten-Jumperkabel auf der Steckplatte
+•⁠  ⁠Protokoll: Serielles Einleiter-Busprotokoll (NeoPixel-Schnittstelle über GPIO 7)
+•⁠  ⁠Daten: Befehle zur Farbcodierung und Helligkeitssteuerung der 12 RGB-Segmente
+
+ESP32-C6-N8 ⇄ Webserver / API (load.php)
+•⁠  ⁠Weg: Drahtlos über das lokale WLAN-Netzwerk an das Internet/Backend
+•⁠  ⁠Protokoll: Das ESP32-Board sendet die Daten per HTTP-POST an die Schnittstelle load.php, welche die Werte direkt in die Tabelle device_rating einträgt
+•⁠  ⁠Daten: JSON-Payload bestehend aus der Gerätekennung und der Bewertung {"device_id": 1, "status": 0/1/2}
+
+Datenbank ⇄ Frontend (Benutzeroberfläche)
+•⁠  ⁠Weg: Interner Server- und Netzwerkdatenfluss
+•⁠  ⁠Protokoll: Das Skript dashboard.php fragt die Datenbank ab. Die Weboberfläche holt sich diese Daten ab, ordnet die Bewertungs-IDs über das Datum dem jeweiligen Menü zu und stellt die Ergebnisse im Betreuer-Kalender dar.
+
+Steckplan  
+<img src="Steckschema.jpeg" alt="Steckschema" width="500">
+---
 
 ## technische Details
 
-// Hier sollte das Verständnis ersichtlich sein / Wie stehen die Dateien in Beziehung zueinander, Wie reden Die Dateien miteinander, Wie ist der Weg der Daten
+In diesem Abschnitt wird die softwareseitige Architektur, die Datenbeziehung und der genaue Kommunikationsfluss zwischen dem physischen Terminal (Physical Computing) und der Web-App (Backend/Frontend) aufgeschlüsselt.
 
-•⁠  ⁠*Projektstruktur / Code-Struktur:* \[Hinweis: Der Code selbst muss im Repository liegen und im Kopfbereich jeder Datei eine kurze Zusammenfassung enthalten.\]  
-•⁠  ⁠*Datenschnittstelle: \[*zwischen WebApp und Physical Computing\]  
-•⁠  ⁠*ERM:* \[Erklärung und Schaubild\]  
-•⁠  ⁠*Authentifizierung:* \[Erklärung\]
+### Projektstruktur / Code-Struktur
 
-## Known bugs
+YumYum-Feedback/
+│
+├── index.php                 # Startseite / Login-Maske für Betreuungspersonen
+├── dashboard.php             # Hauptseite: Auswertung der Menü-Akzeptanz (Kalenderansicht)
+├── load.php                  # API: Empfängt JSON-Daten vom Terminal und schreibt sie in die DB
+│
+├── css/
+│   ├── style.css             # Allgemeines Layout und Design der Web-App
+│   └── dashboard.css         # Spezifische Styles für die Kalender- und Diagramm-Visualisierung
+│
+├── api/
+│   ├── auth/
+│   │   ├── login.php         # Verarbeitet den Login der Betreuungspersonen
+│   │   ├── logout.php        # Beendet die Session und meldet den User ab
+│   │   └── check_auth.php    # Prüft den Session-Status ("Bin ich eingeloggt?")
+│   │
+│   └── ratings/
+│       └── get_monthly.php   # Lädt die aggregierten Abstimmungsdaten für den Dashboard-Kalender
+│
+├── system/
+│   ├── config.php            # Zentrale Datenbank-Zugangsdaten (In .gitignore hinterlegt!)
+│   └── db_structure.sql      # SQL-Dump für die Tabellenstruktur
+│
+└── mc/
+└── terminal/
+└── terminal.ino      # ESP32-C6 Firmware (WLAN-Anbindung, Debounce, Spam-Schutz & HTTP-POST)
 
-•⁠  ⁠Was funktioniert noch nicht einwandfrei?  
-•⁠  ⁠Was ist uns aufgefallen bei der Entwicklung?  
-•⁠  ⁠Was könnte noch verbessert werden?
+### Datenschnittstelle (Weg der Daten)
+•⁠  ⁠*Physical Computing:* Ein Kind drückt einen Metall-Taster $\rightarrow$ Der ESP32-C6 validiert den Klick (Entprellung + Spam-Schutz) $\rightarrow$ Der Controller generiert mittels ⁠ Arduino_JSON ⁠ die Payload und sendet einen ⁠ HTTP-POST ⁠-Request mit dem Header ⁠ Content-Type: application/json ⁠ an das Backend.
+•⁠  ⁠*WebApp:* Die API-Schnittstelle ⁠ load.php ⁠ nimmt den Request entgegen, decodiert den JSON-String per ⁠ json_decode() ⁠ und speichert die Daten persistent per SQL-⁠ INSERT ⁠ in die Datenbank.
 
-## Umsetzungsprozess
+### Known Bugs
 
-•⁠  ⁠*Reflexion / Erfahrung / Lernfortschritt:* Was haben wir gelernt? Würden wir es nochmal genauso machen? Was war gut, was war schlecht?  
-•⁠  ⁠*Herausforderungen & Lösungen:* \[Verworfene Ansätze, Fehler, Umplanungen\]  
-•⁠  ⁠*KI-Einsatz:* Dokumentation der verwendeten KI-Tools und deren Nutzen (KI ist nicht verboten)  
-•⁠  ⁠*Fazit:* …
+Im ursprünglichen Fritzing-Steckplan (Steckschema.jpeg) wurden die Taster gegen GND verdrahtet und der LED-Ring fälschlicherweise über einen GPIO-Pin gespeist. Beim realen Prototypen-Bau wurde dies korrigiert: Die Taster hängen an 3.3V (wegen INPUT_PULLDOWN) und der LED-Ring wird stabil über den 5V-Pin (VBUS) versorgt.
