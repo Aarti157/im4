@@ -1,71 +1,141 @@
-# 🔑👤 Authentifizierung Minimal (Boilerplate)
+## Kurzbeschreibung des Projekts
 
-![Static Badge](https://img.shields.io/badge/Sprache-PHP-%23f7df1e)
-![Static Badge](https://img.shields.io/badge/Kurs-MMP_IM4-blue)
-![Last Changed](https://img.shields.io/endpoint?url=https://badges.crazy-internet.ch/im4_example.php)
+•⁠  ⁠*Modul:* Interaktive Medien 4 an der Fachhochschule Graubünden (FS26)  
+•⁠  ⁠*Themenfeld:* IoT-Applikation zum Thema Eltern mit kleinen Kindern  
+•⁠  ⁠*Name des Projekts:* YumYum Feedback  
+•⁠  ⁠*Team Physical Computing:* Lorena Simonelli & Sheyla Spiess  
+•⁠  ⁠*Team WebApp:* Aarti Miescher & Tamara Kae Marzan
 
-> 🎨 Dieses Boilerplate kann entweder in einem Code-Along Schritt für Schritt gemeinsam erarbeitet werden oder fixfertig auf einem Webserver installiert werden.
+**Welches Problem im Alltag von Eltern mit kleinen Kindern wird gelöst?**
+In Kitas und Familien ist es oft schwierig, objektives Feedback von Kleinkindern zum Essen zu erhalten. Verbale Kommunikation ist in diesem Alter oft unpräzise und die tatsächliche Akzeptanz von Mahlzeiten bleibt für Eltern und Küchenpersonal unklar. Dies führt zu unnötigem Food Waste, da die Menüplanung nicht optimal auf die Bedürfnisse der Kinder abgestimmt ist.
 
-Dieses Repository beinhaltet ein vollständiges, minimales Authenzifizierungs-System basierend auf PHP als Backend und HTML/CSS/JS als Frontend.
+**Was ist der „Sinn und Zweck“ des Systems?**
+YumYum Feedback ist ein interaktives Feedbacksystem, das die Lücke zwischen kindlicher Erfahrung und erwachsener Datenanalyse schliesst. Durch ein haptisches Eingabegerät können Kinder spielerisch und autonom ihr Essen bewerten. Diese Daten werden digital aufbereitet, um die Kommunikation zwischen Kindern, Betreuungspersonen und Küche zu verbessern und Abfälle gezielt zu reduzieren.
 
-Es ermöglicht Benutzern das `Registrieren`, `Anmelden`, `Abmelden` und den Zugriff auf eine `geschützte Seite` nach erfolgreicher Authentifizierung.
+### UX & Konzeption
 
-# 🏁 Live - Version
+In diesem Teil werden die gemeinsamen Schritte aus der UX-Abgabe dokumentiert, damit sich hier alles vollständig an einem Ort befindet (betrifft WebApp und Physical Computing)
 
-Du kannst Homely unter folgendem Link testen:
+•⁠  ⁠*Figma:* https://www.figma.com/design/duhxVGTsO6L7Tl17rjWYhk/IM-4-%E2%80%93-App-Konzeption-Vorlage--Copy-?node-id=97-1136&t=HTVwNsrONgHQfIB7-1
+•⁠  ⁠*User Flow + Screen Flow:* <img src="Userflow.png" alt="User Flow" width="600">
 
-[https://im4.crazy-internet.ch/](https://im4.crazy-internet.ch/)
+•⁠  ⁠*Welche Features waren angedacht?*
+  * Echtzeit-Feedback: Visuelle Bestätigung am Gerät (LEDs) nach der Stimmabgabe.
+  * Dashboard für Erwachsene: Visualisierung der Beliebtheit von Speisen über Zeiträume hinweg.
+  * Daten-Schnittstelle: Automatisierte Übertragung der Klicks vom ESP32 an die Web-Datenbank.
 
-## ⚙️ Installation
+•⁠  ⁠*Welche Features wurden nicht umgesetzt? (Warum)*
+  * Drei grosse, robuste Buttons mit visuellen Icons: Wir haben uns im Prozess für mechanisch Metall-Schraubtaster entschieden. Die farbliche Zuordnung wird über das grafische Interface des Gehäuses gelöst.
+  * RFID-Identifikation: Wurde verworfen, um die Anonymität zu wahren und den Fokus auf das Gesamtfeedback der Gruppe zu legen (Datenschutz und vereinfachte Handhabung in Kitas).
 
-Um dieses Boilerplate auf dem eigenen Web-Server zu installieren, führe folgende Schritte aus:
+---
 
-### 1. Download
+### Setup
 
-- [Klone das Repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) über GitHub oder [downloade das Repository als ZIP Datei](https://docs.github.com/en/repositories/working-with-files/using-files/downloading-source-code-archives) auf deinen eigenen Computer.
+•⁠  ⁠*WebApp:* [Link zur Website](https://im4.potterai.ch/)  
+•⁠  ⁠*Video-Dokumentation:* [Link zum Video auf Youtube](XXXXXXXXXXXX) 
 
-### 2. Datenbank
+#### Installationsanleitung WebApp (AARTI + KAE)
 
-- Erstelle eine neue Datenbank bei deinem Hoster (z.B. [Infomaniak](https://www.infomaniak.com/de/support/faq/1981/mysqlmariadb-benutzer-und-datenbanken-verwalten)).
+Verständliche Schritt-für-Schritt-Anleitung für Aussenstehende, um das Projekt zu klonen und auf einem eigenen Server zu installieren.
 
-- Importiere die Datei `system/database.sql` in die neue Datenbank, um die `users` Tabelle zu erstellen.
+1.⁠ ⁠Was benötige ich an Infrastruktur? 2. Was muss ich auf meinem Webserver installieren? 3. Wie kann ich die Datenbank importieren? 4. Wo muss ich die DB-Credentials eintragen? 5. … 6. Wie nehme ich das physische Artefakt in Betrieb?
 
-### 3. Code
+#### Bauanleitung Physical Computing (Lorena + Sheyla)
 
-- Benenne die Datei `system/config.php.blank` in `system/config.php` um.
+Was muss ich wie bauen, verbinden, installieren?
+Wir müssen es schaffen, dass ein haptischer Tastendruck am Terminal fehlerfrei registriert wird, der integrierte LED-Ring darauf visuell reagiert und das entsprechende Feedback-Signal per WLAN an die Web-Datenbank übermittelt wird. Das Signal muss dann einer Device-ID und einem Status zugewiesen werden, damit es für die Menüplanung weiterverarbeitet werden kann.
 
-- Passe die Datenbankverbindungsdaten in der Datei `system/config.php` an.
+*Komponentenplan*
 
-### 4. FTP Connect
+Die eingesetzten Komponenten:
 
-- Erstelle eine neue FTP Verbindung mit dem SFTP Plugin gemäss [Anleitung im MMP 101](https://github.com/Interaktive-Medien/101-MMP/blob/main/resources/sftp.md).
+•⁠  ⁠Mikrocontroller-Board: ESP32-C6 N8 ← Verarbeitet die Eingangssignale der Taster, steuert den LED-Ring und sendet sie über das integrierte WLAN-Modul an den Webserver.
+•⁠  ⁠Eingabe-Elemente: 3x Metall-Drucktaster ← Mechanisch Schraubtaster, welche die Interaktion der Kinder abfangen.
+•⁠  ⁠Visuelle Ausgabe: WS2812B RGB-LED-Ring ← 12-Segment-Ring, der im Standby als dreigeteilte Ampelanzeige dient und bei Klick eine optische Bestätigung ausgibt.
+•⁠  ⁠Stromversorgung: USB-Kabel mit 5V ← Liefert die nötige elektrische Energie für den stabilen Betrieb der Hardware und des LED-Rings.
+•⁠  ⁠Prototyping-Plattform: Steckplatte ← Ermöglicht das lötfreie Aufstecken, Fixieren und elektrische Verschalten der Bauteile.
+•⁠  ⁠Verbindungsleitungen: Jumperkabel ← Verbinden die Pins der Komponenten flexibel mit der Steckplatte.
 
-# 📁 Struktur
+Visualisierung Komponentenplan: XXX
 
-## 🎨 Frontend
+Die verbundenen Sensoren und Aktoren:
 
-### root (Basis-Verzeichnis)
+Sensoren:
+•⁠  ⁠3x Metall-Drucktaster: Fungieren als digitale Sensoren. Sie schliessen bei Betätigung den Stromkreis und legen ein Schaltsignal an den jeweiligen GPIO-Pin, sobald ein Kind abstimmt.
 
-- beinhaltet alle HTML-Dateien des Frontends.
-- beinhaltet die `.gitignore` Datei, welche die Dateien und Verzeichnisse ausblendet, die nicht auf GitHub hochgeladen werden sollen.
+Aktoren:
+•⁠  ⁠WS2812B LED-Ring (12 Segmente): Fungiert als physischer Aktor. Gesteuert durch die Datei terminal.ino setzt er die Programmbefehle in eine physikalische Aktion um, indem er die passende Lichtfarbe (Grün, Gelb, Rot) als direktes Feedback aufleuchten lässt.
 
-### js
+Die Programme (mit Dateinamen):
 
-- beinhaltet alle JavaScript-Dateien des Frontends.
+•⁠  ⁠terminal.ino ← Läuft auf dem ESP32-C6. Liest den Status der Taster aus, entprellt das Signal, steuert den LED-Ring an und sendet die Daten per HTTP-POST an den Webserver
+•⁠  ⁠load.php ← Empfängt die JSON-Daten vom ESP32 per HTTP und schreibt den Bewertungswert per SQL in die Datenbank
+•⁠  ⁠config.php ← Zentrale Konfigurationsdatei; stellt die Datenbankverbindung für alle PHP-Dateien bereit
+•⁠  ⁠dashboard.php ← Frontend-Seite (Kalenderansicht), auf der die aggregierten Ergebnisse für die Betreuungspersonen visualisiert werden
 
-### css
+Die Kommunikationswege:
 
-- beinhaltet alle CSS-Dateien des Frontends.
+Metall-Drucktaster ⇄ Microcontrollerboard ESP32-C6-N8
+•⁠  ⁠Weg: Kabelgebunden über die Jumperkabel auf der Steckplatte
+•⁠  ⁠Protokoll: Digitales Schaltsignal (3.3V über INPUT_PULLDOWN-Schaltung)
+•⁠  ⁠Daten: Der Tastendruck aktiviert den jeweiligen GPIO-Pin (4 = Gut, 5 = Neutral, 6 = Schlecht)
 
-## 🤖 Backend
+Microcontrollerboard ESP32-C6-N8 ⇄ WS2812B LED-Ring
+•⁠  ⁠Weg: Kabelgebunden über ein Daten-Jumperkabel auf der Steckplatte
+•⁠  ⁠Protokoll: Serielles Einleiter-Busprotokoll (NeoPixel-Schnittstelle über GPIO 7)
+•⁠  ⁠Daten: Befehle zur Farbcodierung und Helligkeitssteuerung der 12 RGB-Segmente
 
-### api
+ESP32-C6-N8 ⇄ Webserver / API (load.php)
+•⁠  ⁠Weg: Drahtlos über das lokale WLAN-Netzwerk an das Internet/Backend
+•⁠  ⁠Protokoll: Das ESP32-Board sendet die Daten per HTTP-POST an die Schnittstelle load.php, welche die Werte direkt in die Tabelle device_rating einträgt
+•⁠  ⁠Daten: JSON-Payload bestehend aus der Gerätekennung und der Bewertung {"device_id": 1, "status": 0/1/2}
 
-- Beinhaltet alle API-Endpunkte des Backends.
-- Diese Dateien werden von `JavaScript` aufgerufen und geben eine Antwort an `JavaScript` zurück.
+Datenbank ⇄ Frontend (Benutzeroberfläche)
+•⁠  ⁠Weg: Interner Server- und Netzwerkdatenfluss
+•⁠  ⁠Protokoll: Das Skript dashboard.php fragt die Datenbank ab. Die Weboberfläche holt sich diese Daten ab, ordnet die Bewertungs-IDs über das Datum dem jeweiligen Menü zu und stellt die Ergebnisse im Betreuer-Kalender dar.
 
-### system
+Steckplan  
+<img src="Steckschema.jpeg" alt="Steckschema" width="500">
+---
 
-- Beinhaltet die Konfigurationsdatei für die Datenbankverbindung.
-- Beinhaltet die Datei `database.sql`, die die `users` Tabelle erstellt.
-- Beinhaltet die Datei `config.php`, die die Konfiguration des Backends enthält.
+## technische Details
+
+In diesem Abschnitt wird die softwareseitige Architektur, die Datenbeziehung und der genaue Kommunikationsfluss zwischen dem physischen Terminal (Physical Computing) und der Web-App (Backend/Frontend) aufgeschlüsselt.
+
+### Projektstruktur / Code-Struktur
+
+YumYum-Feedback/
+│
+├── index.php                 # Startseite / Login-Maske für Betreuungspersonen
+├── dashboard.php             # Hauptseite: Auswertung der Menü-Akzeptanz (Kalenderansicht)
+├── load.php                  # API: Empfängt JSON-Daten vom Terminal und schreibt sie in die DB
+│
+├── css/
+│   ├── style.css             # Allgemeines Layout und Design der Web-App
+│   └── dashboard.css         # Spezifische Styles für die Kalender- und Diagramm-Visualisierung
+│
+├── api/
+│   ├── auth/
+│   │   ├── login.php         # Verarbeitet den Login der Betreuungspersonen
+│   │   ├── logout.php        # Beendet die Session und meldet den User ab
+│   │   └── check_auth.php    # Prüft den Session-Status ("Bin ich eingeloggt?")
+│   │
+│   └── ratings/
+│       └── get_monthly.php   # Lädt die aggregierten Abstimmungsdaten für den Dashboard-Kalender
+│
+├── system/
+│   ├── config.php            # Zentrale Datenbank-Zugangsdaten (In .gitignore hinterlegt!)
+│   └── db_structure.sql      # SQL-Dump für die Tabellenstruktur
+│
+└── mc/
+└── terminal/
+└── terminal.ino      # ESP32-C6 Firmware (WLAN-Anbindung, Debounce, Spam-Schutz & HTTP-POST)
+
+### Datenschnittstelle (Weg der Daten)
+•⁠  ⁠*Physical Computing:* Ein Kind drückt einen Metall-Taster $\rightarrow$ Der ESP32-C6 validiert den Klick (Entprellung + Spam-Schutz) $\rightarrow$ Der Controller generiert mittels ⁠ Arduino_JSON ⁠ die Payload und sendet einen ⁠ HTTP-POST ⁠-Request mit dem Header ⁠ Content-Type: application/json ⁠ an das Backend.
+•⁠  ⁠*WebApp:* Die API-Schnittstelle ⁠ load.php ⁠ nimmt den Request entgegen, decodiert den JSON-String per ⁠ json_decode() ⁠ und speichert die Daten persistent per SQL-⁠ INSERT ⁠ in die Datenbank.
+
+### Known Bugs
+
+Im ursprünglichen Fritzing-Steckplan (Steckschema.jpeg) wurden die Taster gegen GND verdrahtet und der LED-Ring fälschlicherweise über einen GPIO-Pin gespeist. Beim realen Prototypen-Bau wurde dies korrigiert: Die Taster hängen an 3.3V (wegen INPUT_PULLDOWN) und der LED-Ring wird stabil über den 5V-Pin (VBUS) versorgt.
