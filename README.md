@@ -17,7 +17,8 @@ YumYum Feedback ist ein interaktives Feedbacksystem, das die Lücke zwischen kin
 In diesem Teil werden die gemeinsamen Schritte aus der UX-Abgabe dokumentiert, damit sich hier alles vollständig an einem Ort befindet (betrifft WebApp und Physical Computing)
 
 •⁠  ⁠*Figma:* https://www.figma.com/design/duhxVGTsO6L7Tl17rjWYhk/IM-4-%E2%80%93-App-Konzeption-Vorlage--Copy-?node-id=97-1136&t=HTVwNsrONgHQfIB7-1
-•⁠  ⁠*User Flow + Screen Flow:* <img src="Userflow.png" alt="User Flow" width="600">
+•⁠  ⁠*User Flow + Screen Flow:* <img src="assets/Userflow.jpeg" alt="User Flow" width="600">
+•  *User Flow + Screen Flow Figma:* https://www.figma.com/board/qWYjUfc9T2vbG6PxpmFnCn/USER-FLOW?node-id=0-1&t=qyvtniZ1g1mnqeoW-1
 
 •⁠  ⁠*Welche Features waren angedacht?*
   * Echtzeit-Feedback: Visuelle Bestätigung am Gerät (LEDs) nach der Stimmabgabe.
@@ -99,7 +100,7 @@ Die eingesetzten Komponenten:
 •⁠  ⁠Prototyping-Plattform: Steckplatte ← Ermöglicht das lötfreie Aufstecken, Fixieren und elektrische Verschalten der Bauteile.
 •⁠  ⁠Verbindungsleitungen: Jumperkabel ← Verbinden die Pins der Komponenten flexibel mit der Steckplatte.
 
-Visualisierung Komponentenplan: XXX
+Visualisierung Komponentenplan: <img src="assets/Komponentenplan.png.jpeg" alt="Komponentenplan" width="500">
 
 Die verbundenen Sensoren und Aktoren:
 
@@ -107,14 +108,16 @@ Sensoren:
 •⁠  ⁠3x Metall-Drucktaster: Fungieren als digitale Sensoren. Sie schliessen bei Betätigung den Stromkreis und legen ein Schaltsignal an den jeweiligen GPIO-Pin, sobald ein Kind abstimmt.
 
 Aktoren:
-•⁠  ⁠WS2812B LED-Ring (12 Segmente): Fungiert als physischer Aktor. Gesteuert durch die Datei terminal.ino setzt er die Programmbefehle in eine physikalische Aktion um, indem er die passende Lichtfarbe (Grün, Gelb, Rot) als direktes Feedback aufleuchten lässt.
+•⁠  ⁠WS2812B LED-Ring (12 Segmente): Fungiert als physischer Aktor. Gesteuert durch die Datei mc.ino setzt er die Programmbefehle in eine physikalische Aktion um, indem er die passende Lichtfarbe (Grün, Gelb, Rot) als direktes Feedback aufleuchten lässt.
 
 Die Programme (mit Dateinamen):
 
-•⁠  ⁠terminal.ino ← Läuft auf dem ESP32-C6. Liest den Status der Taster aus, entprellt das Signal, steuert den LED-Ring an und sendet die Daten per HTTP-POST an den Webserver
-•⁠  ⁠load.php ← Empfängt die JSON-Daten vom ESP32 per HTTP und schreibt den Bewertungswert per SQL in die Datenbank
-•⁠  ⁠config.php ← Zentrale Konfigurationsdatei; stellt die Datenbankverbindung für alle PHP-Dateien bereit
-•⁠  ⁠dashboard.php ← Frontend-Seite (Kalenderansicht), auf der die aggregierten Ergebnisse für die Betreuungspersonen visualisiert werden
+•⁠  mc.ino ← Läuft als Firmware direkt auf dem ESP32-C6. Diese Datei überwacht die GPIO-Pins der drei Taster, entprellt die Signale elektronisch, steuert den RGB-LED-Ring für das optische Feedback an und schickt die Bewertung drahtlos per WLAN an den Server.
+•⁠ api/load.php ← Die Empfänger-Schnittstelle (API) auf dem Server. Sie nimmt den HTTP-POST-Request und die JSON-Daten des ESP32 entgegen, liest die Bewertung aus und schreibt sie per SQL-INSERT in die Tabelle gericht_device_zeit.
+•⁠ system/config.php ← Die zentrale Konfigurationsdatei. Sie beinhaltet die Zugangsdaten für das Datenbanksystem und stellt die PDO-Verbindung (Datenbank-Brücke) für alle anderen PHP-Skripte sicher zur Verfügung.
+•⁠ api/gericht_erfassen.php ← Verarbeitet die Formulareingaben der Erzieher. Wenn ein neues Menü eingetippt wird, nimmt diese Datei die Daten an und speichert sie in der Tabelle gerichte.
+•⁠ api/woche.php & api/gerichte.php ← Die Auswertungs-Schnittstellen. Sie holen die Gerichte und die dazugehörigen Klicks aus der Datenbank, rechnen die Ampel-Bewertungen mathematisch zusammen und liefern das Ergebnis als JSON-Daten an das Frontend.
+•⁠ dashboard.html & gerichte.html ← Die eigentlichen Weboberflächen (Frontend) für das Kitapersonal. Sie beinhalten keine PHP-Logik, sondern nutzen die JavaScript-Dateien (js/dashboard.js und js/gerichte.js), um die Daten asynchron vom Server zu laden und als Kalender oder Prozentbalken anzuzeigen.
 
 Die Kommunikationswege:
 
@@ -130,18 +133,21 @@ Microcontrollerboard ESP32-C6-N8 ⇄ WS2812B LED-Ring
 
 ESP32-C6-N8 ⇄ Webserver / API (load.php)
 •⁠  ⁠Weg: Drahtlos über das lokale WLAN-Netzwerk an das Internet/Backend
-•⁠  ⁠Protokoll: Das ESP32-Board sendet die Daten per HTTP-POST an die Schnittstelle load.php, welche die Werte direkt in die Tabelle device_rating einträgt
+•⁠  ⁠Protokoll: Das ESP32-Board sendet die Daten per HTTP-POST an die Schnittstelle load.php, welche die Werte direkt in die Tabelle gericht_device_zeit einträgt
 •⁠  ⁠Daten: JSON-Payload bestehend aus der Gerätekennung und der Bewertung {"device_id": 1, "status": 0/1/2}
 
 Datenbank ⇄ Frontend (Benutzeroberfläche)
-•⁠  ⁠Weg: Interner Server- und Netzwerkdatenfluss
-•⁠  ⁠Protokoll: Das Skript dashboard.php fragt die Datenbank ab. Die Weboberfläche holt sich diese Daten ab, ordnet die Bewertungs-IDs über das Datum dem jeweiligen Menü zu und stellt die Ergebnisse im Betreuer-Kalender dar.
+•⁠ Weg: Interner Server- und Netzwerkdatenfluss über asynchrone HTTP-Anfragen.
+•⁠ Protokoll: Die Frontend-Skripte `js/dashboard.js` und `js/gerichte.js` fordern die Daten über `fetch()` (HTTP-GET) von den serverseitigen Schnittstellen `api/woche.php` und `api/gerichte.php` an.
+•⁠ Daten: Die PHP-Schnittstellen lesen die Daten aus den MySQL-Tabellen (`gerichte` und `gericht_device_zeit`) aus, verknüpfen sie über einen SQL-Join und übergeben das Ergebnis als strukturiertes JSON-Payload an den Browser. Das JavaScript verarbeitet diese Daten (z. B. Berechnung der Prozentbalken für 👍, 😐, 👎) und stellt die Ergebnisse dynamisch im Betreuer-Kalender sowie auf den Feedback-Karten dar.
 
-Steckplan
-<img src="Steckschema.jpeg" alt="Steckschema" width="500">
+Steckplan  
+<img src="assets/Steckschema.jpeg" alt="Steckschema" width="500">
+
+
 ---
 
-## technische Details
+## technische Details (Kae & Aarti)
 
 In diesem Abschnitt wird die softwareseitige Architektur, die Datenbeziehung und der genaue Kommunikationsfluss zwischen dem physischen Terminal (Physical Computing) und der Web-App (Backend/Frontend) aufgeschlüsselt.
 
@@ -181,9 +187,8 @@ YumYum-Feedback/
 │   ├── config.php            # Zentrale Datenbank-Zugangsdaten (In .gitignore hinterlegt!)
 │   └── db_structure.sql      # SQL-Dump für die Tabellenstruktur
 │
-└── mc/
-└── terminal/
-└── terminal.ino              # ESP32-C6 Firmware (WLAN-Anbindung, Debounce, Spam-Schutz & HTTP-POST)
+└── mc.ino
+                              # ESP32-C6 Firmware (WLAN-Anbindung, Debounce, Spam-Schutz & HTTP-POST)
 
 ### Datenschnittstelle (Weg der Daten)
 •⁠  ⁠*Physical Computing:* Ein Kind drückt einen Metall-Taster $\rightarrow$ Der ESP32-C6 validiert den Klick (Entprellung + Spam-Schutz) $\rightarrow$ Der Controller generiert mittels ⁠ Arduino_JSON ⁠ die Payload und sendet einen ⁠ HTTP-POST ⁠-Request mit dem Header ⁠ Content-Type: application/json ⁠ an das Backend.
