@@ -1,71 +1,86 @@
-# 🔑👤 Authentifizierung Minimal (Boilerplate)
+## Kurzbeschreibung des Projekts
 
-![Static Badge](https://img.shields.io/badge/Sprache-PHP-%23f7df1e)
-![Static Badge](https://img.shields.io/badge/Kurs-MMP_IM4-blue)
-![Last Changed](https://img.shields.io/endpoint?url=https://badges.crazy-internet.ch/im4_example.php)
+•⁠  ⁠*Modul:* Interaktive Medien 4 an der Fachhochschule Graubünden (FS26)  
+•⁠  ⁠*Themenfeld:* IoT-Applikation zum Thema Eltern mit kleinen Kindern  
+•⁠  ⁠*Name des Projekts:* YumYum Feedback  
+•⁠  ⁠*Team Physical Computing:* Lorena Simonelli & Sheyla Spiess
+•⁠  ⁠*Team WebApp:* Aarti Miescher & Tamara Kae Marzan
+ 
+ 
+* Welches Problem im Alltag von Eltern mit kleinen Kindern wird gelöst?*
+In Kitas und Familien ist es oft schwierig, objektives Feedback von Kleinkindern zum Essen zu erhalten. Verbale Kommunikation ist in diesem Alter oft unpräzise, und die tatsächliche Akzeptanz von Mahlzeiten bleibt für Eltern und Küchenpersonal unklar. Dies führt zu unnötigem Food Waste, da die Menüplanung nicht optimal auf die Bedürfnisse der Kinder abgestimmt ist.
 
-> 🎨 Dieses Boilerplate kann entweder in einem Code-Along Schritt für Schritt gemeinsam erarbeitet werden oder fixfertig auf einem Webserver installiert werden.
+* Was ist der „Sinn und Zweck“ des Systems?*
+YumYum Feedback ist ein interaktives Feedbacksystem, das die Lücke zwischen kindlicher Erfahrung und erwachsener Datenanalyse schliesst. Durch ein haptisches Eingabegerät können Kinder spielerisch und autonom ihr Essen bewerten. Diese Daten werden digital aufbereitet, um die Kommunikation zwischen Kindern, Betreuungspersonen und Küche zu verbessern und Abfälle gezielt zu reduzieren.
 
-Dieses Repository beinhaltet ein vollständiges, minimales Authenzifizierungs-System basierend auf PHP als Backend und HTML/CSS/JS als Frontend.
+\[Bilder / GIFs (optional)\]
 
-Es ermöglicht Benutzern das `Registrieren`, `Anmelden`, `Abmelden` und den Zugriff auf eine `geschützte Seite` nach erfolgreicher Authentifizierung.
+### UX & Konzeption
 
-# 🏁 Live - Version
+In diesem Teil werden die gemeinsamen Schritte aus der UX-Abgabe dokumentiert, damit sich hier alles vollständig an einem Ort befindet (betrifft WebApp und Physical Computing)
 
-Du kannst Homely unter folgendem Link testen:
+•⁠  ⁠*Figma:* https://www.figma.com/design/duhxVGTsO6L7Tl17rjWYhk/IM-4-%E2%80%93-App-Konzeption-Vorlage--Copy-?node-id=97-1136&t=HTVwNsrONgHQfIB7-1
+•⁠  ⁠*User Flow \+ Screen Flow*
+<img src="Userflow.jpeg">
 
-[https://im4.crazy-internet.ch/](https://im4.crazy-internet.ch/)
+•⁠  ⁠Welche Features waren angedacht?
+•⁠  ⁠Echtzeit-Feedback: Visuelle Bestätigung am Gerät (LEDs) nach der Stimmabgabe.
+•⁠  ⁠Dashboard für Erwachsene: Visualisierung der Beliebtheit von Speisen über Zeiträume hinweg.
+•⁠  ⁠Daten-Schnittstelle: Automatisierte Übertragung der Klicks vom ESP32 an die Web-Datenbank.
 
-## ⚙️ Installation
+•⁠  ⁠Welche Features wurden nicht umgesetzt? (Warum)
+•⁠  ⁠Drei grosse, robuste Buttons mit visuellen Icons. Wir haben uns für Schraubtaster entschieden. 
+•⁠  ⁠RFID-Identifikation: Wurde verworfen, um die Anonymität zu wahren und den Fokus auf das Gesamtfeedback der Gruppe zu legen (Datenschutz in Kitas).
 
-Um dieses Boilerplate auf dem eigenen Web-Server zu installieren, führe folgende Schritte aus:
 
-### 1. Download
+### Setup
 
-- [Klone das Repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) über GitHub oder [downloade das Repository als ZIP Datei](https://docs.github.com/en/repositories/working-with-files/using-files/downloading-source-code-archives) auf deinen eigenen Computer.
+•⁠  ⁠*WebApp:* [Link zur Website](https://im4.potterai.ch/)  
+•⁠  ⁠*Video-Dokumentation:* [Link zum Video auf Youtube](XXXXXXXXXXXX) 
 
-### 2. Datenbank
+#### Installationsanleitung WebApp (AARTI + KAE)
 
-- Erstelle eine neue Datenbank bei deinem Hoster (z.B. [Infomaniak](https://www.infomaniak.com/de/support/faq/1981/mysqlmariadb-benutzer-und-datenbanken-verwalten)).
+**verständliche* Schritt-für-Schritt-Anleitung für Aussenstehende, um das Projekt zu klonen und auf einem eigenen Server zu installieren*
 
-- Importiere die Datei `system/database.sql` in die neue Datenbank, um die `users` Tabelle zu erstellen.
+1.⁠ ⁠Was benötige ich an Infrastruktur?  
+2.⁠ ⁠Was muss ich auf meinem Webserver installieren?  
+3.⁠ ⁠Wie kann ich die Datenbank importieren?  
+4.⁠ ⁠Wo muss ich die DB-Credentials eintragen?  
+5.⁠ ⁠…  
+6.⁠ ⁠Wie nehme ich das physische Artefakt in Betrieb?
 
-### 3. Code
+#### Bauanleitung Physical Computing (Lorena + Sheyla)
 
-- Benenne die Datei `system/config.php.blank` in `system/config.php` um.
+•⁠  ⁠**Was muss ich wie bauen, verbinden, installieren?**  
+•⁠  ⁠ergänze: **Komponentenplan* (betrifft Physical Computing, vgl. Slides Kapitel 15): Schaubild enthält*  
+  * die eingesetzten Komponenten  
+  * die verbundenen Sensoren und Aktoren  
+  * die Programme (mit Dateinamen)  
+  * die Kommunikationswege  
+•⁠  ⁠ergänze: **Steckplan* (betrifft Physical Computing, vgl. Slides Kapitel 15): generiert z.B. mit Fritzing (empfohlen), Tinkercad, Wokwi*  
+  * beachtet die [Fritzing Parts](https://github.com/Interaktive-Medien/im_physical_computing/tree/main/15_Intro_Projektdoku) extra für euch  
+•⁠  ⁠ggf. **Bildmaterial**
 
-- Passe die Datenbankverbindungsdaten in der Datei `system/config.php` an.
+<img src="Steckschema.jpeg">
 
-### 4. FTP Connect
+## technische Details
 
-- Erstelle eine neue FTP Verbindung mit dem SFTP Plugin gemäss [Anleitung im MMP 101](https://github.com/Interaktive-Medien/101-MMP/blob/main/resources/sftp.md).
+// Hier sollte das Verständnis ersichtlich sein / Wie stehen die Dateien in Beziehung zueinander, Wie reden Die Dateien miteinander, Wie ist der Weg der Daten
 
-# 📁 Struktur
+•⁠  ⁠*Projektstruktur / Code-Struktur:* \[Hinweis: Der Code selbst muss im Repository liegen und im Kopfbereich jeder Datei eine kurze Zusammenfassung enthalten.\]  
+•⁠  ⁠*Datenschnittstelle: \[*zwischen WebApp und Physical Computing\]  
+•⁠  ⁠*ERM:* \[Erklärung und Schaubild\]  
+•⁠  ⁠*Authentifizierung:* \[Erklärung\]
 
-## 🎨 Frontend
+## Known bugs
 
-### root (Basis-Verzeichnis)
+•⁠  ⁠Was funktioniert noch nicht einwandfrei?  
+•⁠  ⁠Was ist uns aufgefallen bei der Entwicklung?  
+•⁠  ⁠Was könnte noch verbessert werden?
 
-- beinhaltet alle HTML-Dateien des Frontends.
-- beinhaltet die `.gitignore` Datei, welche die Dateien und Verzeichnisse ausblendet, die nicht auf GitHub hochgeladen werden sollen.
+## Umsetzungsprozess
 
-### js
-
-- beinhaltet alle JavaScript-Dateien des Frontends.
-
-### css
-
-- beinhaltet alle CSS-Dateien des Frontends.
-
-## 🤖 Backend
-
-### api
-
-- Beinhaltet alle API-Endpunkte des Backends.
-- Diese Dateien werden von `JavaScript` aufgerufen und geben eine Antwort an `JavaScript` zurück.
-
-### system
-
-- Beinhaltet die Konfigurationsdatei für die Datenbankverbindung.
-- Beinhaltet die Datei `database.sql`, die die `users` Tabelle erstellt.
-- Beinhaltet die Datei `config.php`, die die Konfiguration des Backends enthält.
+•⁠  ⁠*Reflexion / Erfahrung / Lernfortschritt:* Was haben wir gelernt? Würden wir es nochmal genauso machen? Was war gut, was war schlecht?  
+•⁠  ⁠*Herausforderungen & Lösungen:* \[Verworfene Ansätze, Fehler, Umplanungen\]  
+•⁠  ⁠*KI-Einsatz:* Dokumentation der verwendeten KI-Tools und deren Nutzen (KI ist nicht verboten)  
+•⁠  ⁠*Fazit:* …
