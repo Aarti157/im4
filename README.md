@@ -160,6 +160,8 @@ Als Technologie-Stack kommen HTML, CSS und JavaScript mit der Fetch API im Front
 Die Struktur wurde so gewählt, weil sie eine klare Trennung zwischen Frontend (HTML, CSS, JS) und Backend (PHP-API) schafft und damit die Übersicht und Wartbarkeit des Codes vereinfacht. Da jede Seite ein eigenes JavaScript-File besitzt, lassen sich Fehler schnell einem bestimmten Bereich zuordnen, ohne dass man sich durch eine grosse, zusammenhängende Codebasis arbeiten muss.
 
 
+
+
 YumYum-Feedback/
 │
 ├── index.php                 # Startseite / Login-Maske für Betreuungspersonen
