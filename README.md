@@ -36,7 +36,7 @@ In diesem Teil werden die gemeinsamen Schritte aus der UX-Abgabe dokumentiert, d
 •⁠  ⁠*WebApp:* [Link zur Website](https://im4.potterai.ch/)
 •⁠  ⁠*Video-Dokumentation:* [Link zum Video auf Youtube](XXXXXXXXXXXX) 
 
-#### Installationsanleitung WebApp (AARTI + KAE)
+#### Installationsanleitung WebApp (Aarti + Kae)
 
 #### Infrastruktur
 
