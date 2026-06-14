@@ -32,7 +32,7 @@ In diesem Teil werden die gemeinsamen Schritte aus der UX-Abgabe dokumentiert, d
 
 ### Setup
 
-•⁠  ⁠*WebApp:* [Link zur Website](https://im4.potterai.ch/)  
+•⁠  ⁠*WebApp:* [Link zur Website](https://im4.potterai.ch/)
 •⁠  ⁠*Video-Dokumentation:* [Link zum Video auf Youtube](XXXXXXXXXXXX) 
 
 #### Installationsanleitung WebApp (AARTI + KAE)
@@ -53,16 +53,16 @@ Geeignet ist zum Beispiel ein klassisches Hosting mit PHP 8.0+ oder höher und e
 
 #### Installation Webserver
 
-Auf dem Webserver müssen PHP und die MySQL-Anbindung für PHP installiert sein, weil die API-Dateien wie  login.php und gericht_erfassen.php die Konfiguration aus  system/config.php  laden und über PDO mit der Datenbank arbeiten.
+Auf dem Webserver müssen PHP und die MySQL-Anbindung für PHP installiert sein, weil die API-Dateien wie  login.php und gericht_erfassen.php die Konfiguration aus im4/system/config.php  laden und über PDO mit der Datenbank arbeiten.
 Danach das Projekt bzw. Repository auf den Server kopieren und klonen und die Ordnerstruktur beibehalten.
 
 #### Import Datenbank
 
-Die Datenbank kann man mit phpMyAdmin importieren. Im Projekt gibt es laut Struktur eine  system/db.sql, ausserdem existieren einzelne SQL-Dateien für Tabellen wie Benutzer, Gerichte und Organisationen.
+Die Datenbank kann man mit phpMyAdmin importieren. Im Projekt gibt es laut Struktur eine  im4/system/db.sql, ausserdem existieren einzelne SQL-Dateien für Tabellen wie Benutzer, Gerichte und Organisationen.
 
 #### Eintrag DB-Credentials
 
-Die Datenbank-Zugangsdaten müssen in system/config.php eingetragen werden.
+Die Datenbank-Zugangsdaten müssen in im4/system/config.php eingetragen werden.
 Dort werden typischerweise diese Werte gesetzt:
 Datenbank-Host
 Datenbankname
@@ -137,7 +137,7 @@ Datenbank ⇄ Frontend (Benutzeroberfläche)
 •⁠  ⁠Weg: Interner Server- und Netzwerkdatenfluss
 •⁠  ⁠Protokoll: Das Skript dashboard.php fragt die Datenbank ab. Die Weboberfläche holt sich diese Daten ab, ordnet die Bewertungs-IDs über das Datum dem jeweiligen Menü zu und stellt die Ergebnisse im Betreuer-Kalender dar.
 
-Steckplan  
+Steckplan
 <img src="Steckschema.jpeg" alt="Steckschema" width="500">
 ---
 
@@ -151,7 +151,7 @@ In diesem Abschnitt wird die softwareseitige Architektur, die Datenbeziehung und
 
 ### Projektstruktur / Code-Struktur
 
-Der Code ist als klassische PHP/JavaScript-Web-Applikation aufgebaut und wird über SFTP auf einem externen Infomaniak-Server deployed. Die Verzeichnisstruktur folgt einer klaren Trennung zwischen Frontend und Backend: Im Ordner `api/` liegen alle serverseitigen PHP-Endpunkte (`login.php`, `logout.php`, `register.php`, `protected.php`, `gerichte.php`, `gericht_erfassen.php`, `woche.php`). JavaScript-Files befinden sich im Ordner `js/`, Stylesheets in `css/` und die Datenbankverbindung sowie Konfiguration in `system/config.php`. Die HTML-Seiten (`index.html`, `login.html`, `register.html`, `protected.html`, `gerichte.html`) liegen im Root-Verzeichnis. Die SFTP-Verbindungskonfiguration für das Deployment via Visual Studio Code ist in `.vscode/sftp.json` hinterlegt.
+Der Code ist als klassische PHP/JavaScript-Web-Applikation aufgebaut und wird über SFTP auf einem externen Infomaniak-Server deployed. Die Verzeichnisstruktur folgt einer klaren Trennung zwischen Frontend und Backend: Im Ordner `api/` liegen alle serverseitigen PHP-Endpunkte (`login.php`, `logout.php`, `register.php`, `protected.php`, `gerichte.php`, `gericht_erfassen.php`, `woche.php`). JavaScript-Files befinden sich im Ordner `js/`, Stylesheets in `css/` und die Datenbankverbindung sowie Konfiguration in `im4/system/config.php`. Die HTML-Seiten (`index.html`, `login.html`, `register.html`, `protected.html`, `gerichte.html`) liegen im Root-Verzeichnis. Die SFTP-Verbindungskonfiguration für das Deployment via Visual Studio Code ist in `.vscode/sftp.json` hinterlegt.
 
 Als Technologie-Stack kommen HTML, CSS und JavaScript mit der Fetch API im Frontend zum Einsatz. Das Backend basiert auf PHP mit JSON-Responses, die Datenbank auf MariaDB, gehostet bei Infomaniak. Das Deployment erfolgt manuell per SFTP-Extension in Visual Studio Code.
 
