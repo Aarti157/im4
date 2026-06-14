@@ -30,7 +30,7 @@ window.addEventListener("load", async () => {
         const gericht = result.data.find(g => g.date === datumStr);
 
         return `
-          <div class="tag-karte">
+          <div class="tag-karte" data-datum="${datumStr}" style="cursor:pointer">
             <div class="tag-label">${tag}</div>
             <div class="tag-datum">${datum.toLocaleDateString("de-CH")}</div>
             ${gericht
@@ -47,7 +47,39 @@ window.addEventListener("load", async () => {
   }
 
   loadWoche();
+// Klick auf Tageskarte → Bewertungs-Modal öffnen
+document.getElementById("wocheContainer").addEventListener("click", async (e) => {
+  const karte = e.target.closest("[data-datum]");
+  if (!karte) return;
 
+  const datum = karte.dataset.datum;
+
+  try {
+    const res = await fetch(`/api/gerichte.php?datum=${datum}`, { credentials: "include" });
+    const result = await res.json();
+    const d = result.data;
+
+    const total = d?.total_bewertungen || 0;
+    const good = d?.good || 0;
+    const neutral = d?.neutral || 0;
+    const bad = d?.bad || 0;
+
+    document.getElementById("bewertungDatum").textContent = datum;
+    document.getElementById("bewertungGood").textContent = good;
+    document.getElementById("bewertungNeutral").textContent = neutral;
+    document.getElementById("bewertungBad").textContent = bad;
+    document.getElementById("bewertungTotal").textContent = total;
+    document.getElementById("bewertungModal").style.display = "block";
+  } catch (err) {
+    console.error(err);
+    alert("Fehler beim Laden der Bewertungen.");
+  }
+});
+
+// Bewertungs-Modal schliessen
+document.getElementById("bewertungModalClose").addEventListener("click", () => {
+  document.getElementById("bewertungModal").style.display = "none";
+});
   // Modal öffnen/schliessen
   document.getElementById("openModal").addEventListener("click", () => {
     document.getElementById("gerichtModal").style.display = "block";

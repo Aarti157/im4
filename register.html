@@ -5,42 +5,47 @@
     <title>Register</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body>
-    <h1>Register</h1>
+<body>
+<header class="site-header">
+  <div class="logo">
+    <span>Y</span><span>u</span><span>m</span><span>Y</span><span>u</span><span>m</span>
+  </div>
+</header>
 
+<div class="auth-shell">
+  <a href="index.html" class="back-button">← Zurück</a>
+  <div class="auth-card">
+    <h1>Konto erstellen</h1>
+    <p>Registriere dich für dein Kindergarten.</p>
     <form id="registerForm">
-      <div>
-        <label>Email</label>
-        <input type="email" id="email" required />
-      </div>
-      <div>
-        <label>Name</label>
-        <input type="text" id="name" required />
-      </div>
-      <div>
-        <label>Password</label>
-        <input type="password" id="password" required />
-      </div>
+      <label>Name</label>
+      <input type="text" id="name" required />
+      <label>E-Mail</label>
+      <input type="email" id="email" required />
+      <label>Passwort</label>
+      <input type="password" id="password" required />
+      <label>Rolle</label>
       <select id="rollen_id" required>
         <option value="" disabled selected>Rolle auswählen</option>
         <option value="1">Eltern</option>
         <option value="2">Erzieher:innen</option>
         <option value="3">Küche</option>
       </select>
-      
+      <label>Organisation</label>
       <select id="orga_id" required>
         <option value="" disabled selected>Organisation auswählen</option>
-        <option value="1">Kindergarten Limmat</option>
-        <option value="2">Kindergarten Zollstrasse</option>
-        <option value="3">Kindergarten Kappeli</option>
-        <option value="4">Kindergarten Bullingerhof</option>
-        <option value="5">Kindergarten Holunderhof</option>
+        <option value="2">Kindergarten Limmat</option>
+        <option value="3">Kindergarten Zollstrasse</option>
+        <option value="4">Kindergarten Kapelli</option>
+        <option value="5">Kindergarten Bullingerhof</option>
+        <option value="6">Kindergarten Holunderhof</option>
       </select>
-      <button type="submit">Register</button>
+      <button type="submit" class="button primary full" style="margin-top:20px">Registrieren</button>
     </form>
+    <p style="margin-top:16px">Bereits registriert? <a href="login.html" style="color:var(--pink-dark);font-weight:600">Login</a></p>
+  </div>
+</div>
 
-    <p>Already have an account? <a href="login.html">Login here</a>.</p>
-
-    <script src="js/register.js"></script>
-  </body>
+<script src="js/register.js"></script>
+</body>
 </html>

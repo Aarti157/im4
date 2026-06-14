@@ -33,7 +33,7 @@ In diesem Teil werden die gemeinsamen Schritte aus der UX-Abgabe dokumentiert, d
 
 ### Setup
 
-•⁠  ⁠*WebApp:* [Link zur Website](https://im4.potterai.ch/)  
+•⁠  ⁠*WebApp:* [Link zur Website](https://im4.potterai.ch/)
 •⁠  ⁠*Video-Dokumentation:* [Link zum Video auf Youtube](XXXXXXXXXXXX) 
 
 #### Installationsanleitung WebApp (AARTI + KAE)
@@ -41,6 +41,48 @@ In diesem Teil werden die gemeinsamen Schritte aus der UX-Abgabe dokumentiert, d
 Verständliche Schritt-für-Schritt-Anleitung für Aussenstehende, um das Projekt zu klonen und auf einem eigenen Server zu installieren.
 
 1.⁠ ⁠Was benötige ich an Infrastruktur? 2. Was muss ich auf meinem Webserver installieren? 3. Wie kann ich die Datenbank importieren? 4. Wo muss ich die DB-Credentials eintragen? 5. … 6. Wie nehme ich das physische Artefakt in Betrieb?
+
+#### Infrastruktur
+
+Folgende Infrastruktur wird benötigt:
+•    Ein Webserver oder ein Webhosting mit PHP-Unterstützung, z.B. über Infomaniak
+•    Eine MySQL-Datenbank
+•    HTTPS ist empfohlen, weil die WebApp mit Benutzer-Login und Sessions arbeitet.
+
+Geeignet ist zum Beispiel ein klassisches Hosting mit PHP 8.0+ oder höher und einer MySQL-Datenbank.
+
+
+#### Installation Webserver
+
+Auf dem Webserver müssen PHP und die MySQL-Anbindung für PHP installiert sein, weil die API-Dateien wie  login.php und gericht_erfassen.php die Konfiguration aus im4/system/config.php  laden und über PDO mit der Datenbank arbeiten.
+Danach das Projekt bzw. Repository auf den Server kopieren und klonen und die Ordnerstruktur beibehalten.
+
+#### Import Datenbank
+
+Die Datenbank kann man mit phpMyAdmin importieren. Im Projekt gibt es laut Struktur eine  im4/system/db.sql, ausserdem existieren einzelne SQL-Dateien für Tabellen wie Benutzer, Gerichte und Organisationen.
+
+#### Eintrag DB-Credentials
+
+Die Datenbank-Zugangsdaten müssen in im4/system/config.php eingetragen werden.
+Dort werden typischerweise diese Werte gesetzt:
+Datenbank-Host
+Datenbankname
+Benutzername
+Passwort
+
+
+#### Inbetriebnahme Device
+
+Für die Inbetriebnahme des physischen Artefakts muss das Gerät mit der WebApp bzw. dem Server verbunden werden, damit es Daten an die Datenbank senden oder von dort abrufen kann. In deiner Projektstruktur ist bereits eine Tabelle für Geräte und eine Tabelle für gerätebezogene Bewertungsdaten vorgesehen. Ausserdem wird bei neuen Gerichten mit IDs gearbeitet, damit Bewertungen später einem Gericht zugeordnet werden können.
+
+Das grundsätzliche Vorgehen ist:
+1. Das physische Gerät mit Strom versorgen.
+2. Das Gerät mit dem Netzwerk verbinden, damit es den Webserver erreichen kann.
+3. Das Gerät so konfigurieren, dass es die korrekte Server-URL und die zugehörige Gerätekennung verwendet.
+4. Prüfen, ob das Gerät in der Datenbank als “device” eingetragen ist.
+5. Testweise Daten senden und kontrollieren, ob diese in der Datenbank ankommen.
+
+
 
 #### Bauanleitung Physical Computing (Lorena + Sheyla)
 
@@ -104,7 +146,18 @@ Steckplan
 
 In diesem Abschnitt wird die softwareseitige Architektur, die Datenbeziehung und der genaue Kommunikationsfluss zwischen dem physischen Terminal (Physical Computing) und der Web-App (Backend/Frontend) aufgeschlüsselt.
 
+
+
+
+
 ### Projektstruktur / Code-Struktur
+
+Der Code ist als klassische PHP/JavaScript-Web-Applikation aufgebaut und wird über SFTP auf einem externen Infomaniak-Server deployed. Die Verzeichnisstruktur folgt einer klaren Trennung zwischen Frontend und Backend: Im Ordner `api/` liegen alle serverseitigen PHP-Endpunkte (`login.php`, `logout.php`, `register.php`, `protected.php`, `gerichte.php`, `gericht_erfassen.php`, `woche.php`). JavaScript-Files befinden sich im Ordner `js/`, Stylesheets in `css/` und die Datenbankverbindung sowie Konfiguration in `im4/system/config.php`. Die HTML-Seiten (`index.html`, `login.html`, `register.html`, `protected.html`, `gerichte.html`) liegen im Root-Verzeichnis. Die SFTP-Verbindungskonfiguration für das Deployment via Visual Studio Code ist in `.vscode/sftp.json` hinterlegt.
+
+Als Technologie-Stack kommen HTML, CSS und JavaScript mit der Fetch API im Frontend zum Einsatz. Das Backend basiert auf PHP mit JSON-Responses, die Datenbank auf MariaDB, gehostet bei Infomaniak. Das Deployment erfolgt manuell per SFTP-Extension in Visual Studio Code.
+
+Die Struktur wurde so gewählt, weil sie eine klare Trennung zwischen Frontend (HTML, CSS, JS) und Backend (PHP-API) schafft und damit die Übersicht und Wartbarkeit des Codes vereinfacht. Da jede Seite ein eigenes JavaScript-File besitzt, lassen sich Fehler schnell einem bestimmten Bereich zuordnen, ohne dass man sich durch eine grosse, zusammenhängende Codebasis arbeiten muss.
+
 
 YumYum-Feedback/
 │
@@ -131,7 +184,7 @@ YumYum-Feedback/
 │
 └── mc/
 └── terminal/
-└── terminal.ino      # ESP32-C6 Firmware (WLAN-Anbindung, Debounce, Spam-Schutz & HTTP-POST)
+└── terminal.ino              # ESP32-C6 Firmware (WLAN-Anbindung, Debounce, Spam-Schutz & HTTP-POST)
 
 ### Datenschnittstelle (Weg der Daten)
 •⁠  ⁠*Physical Computing:* Ein Kind drückt einen Metall-Taster $\rightarrow$ Der ESP32-C6 validiert den Klick (Entprellung + Spam-Schutz) $\rightarrow$ Der Controller generiert mittels ⁠ Arduino_JSON ⁠ die Payload und sendet einen ⁠ HTTP-POST ⁠-Request mit dem Header ⁠ Content-Type: application/json ⁠ an das Backend.
@@ -140,3 +193,7 @@ YumYum-Feedback/
 ### Known Bugs
 
 Im ursprünglichen Fritzing-Steckplan (Steckschema.jpeg) wurden die Taster gegen GND verdrahtet und der LED-Ring fälschlicherweise über einen GPIO-Pin gespeist. Beim realen Prototypen-Bau wurde dies korrigiert: Die Taster hängen an 3.3V (wegen INPUT_PULLDOWN) und der LED-Ring wird stabil über den 5V-Pin (VBUS) versorgt.
+
+
+
+

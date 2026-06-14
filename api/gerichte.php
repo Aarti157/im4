@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             SUM(CASE WHEN gdz.bewertung = 0 THEN 1 ELSE 0 END) AS bad
         FROM gerichte g
         LEFT JOIN organisation o ON g.orga_id = o.id
-        LEFT JOIN gericht_device_zeit gdz ON g.id = gdz.gericht_id
+        LEFT JOIN gericht_device_zeit gdz ON DATE(gdz.timestamp) = g.date
         GROUP BY g.id, g.name, g.description, g.date, o.name
         ORDER BY g.date DESC
     ");

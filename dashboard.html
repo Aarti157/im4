@@ -63,6 +63,18 @@
       </div>
     </div>
 
+    <!-- Bewertungs-Modal -->
+<div id="bewertungModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1000; display:none; align-items:center; justify-content:center;">
+  <div style="background:#fff; padding:2rem; border-radius:12px; min-width:300px; text-align:center;">
+    <h2>Bewertungen vom <span id="bewertungDatum"></span></h2>
+    <p>✅ Gut: <strong id="bewertungGood"></strong></p>
+    <p>😐 Neutral: <strong id="bewertungNeutral"></strong></p>
+    <p>❌ Schlecht: <strong id="bewertungBad"></strong></p>
+    <p>Gesamt: <strong id="bewertungTotal"></strong> Bewertungen</p>
+    <button id="bewertungModalClose" style="margin-top:1rem; padding:0.5rem 1.5rem;">Schliessen</button>
+  </div>
+</div>
+
     <script src="js/dashboard.js"></script>
     <script src="js/logout.js"></script>
   </body>
