@@ -41,6 +41,48 @@ Verständliche Schritt-für-Schritt-Anleitung für Aussenstehende, um das Projek
 
 1.⁠ ⁠Was benötige ich an Infrastruktur? 2. Was muss ich auf meinem Webserver installieren? 3. Wie kann ich die Datenbank importieren? 4. Wo muss ich die DB-Credentials eintragen? 5. … 6. Wie nehme ich das physische Artefakt in Betrieb?
 
+##### Infrastruktur
+
+Folgende Infrastruktur wird benötigt:
+•    Ein Webserver oder ein Webhosting mit PHP-Unterstützung, z.B. über Infomaniak
+•    Eine MySQL-Datenbank
+•    HTTPS ist empfohlen, weil die WebApp mit Benutzer-Login und Sessions arbeitet.
+
+Geeignet ist zum Beispiel ein klassisches Hosting mit PHP 8.0+ oder höher und einer MySQL-Datenbank.
+
+
+##### Installation Webserver
+
+Auf dem Webserver müssen PHP und die MySQL-Anbindung für PHP installiert sein, weil die API-Dateien wie  login.php und gericht_erfassen.php die Konfiguration aus  system/config.php  laden und über PDO mit der Datenbank arbeiten.
+Danach das Projekt bzw. Repository auf den Server kopieren und klonen und die Ordnerstruktur beibehalten, weil die App mit Pfaden wie ../system/config.php arbeitet.
+
+##### Import Datenbank
+
+Die Datenbank kann man mit phpMyAdmin importieren. Im Projekt gibt es laut Struktur eine  system/db.sql, ausserdem existieren einzelne SQL-Dateien für Tabellen wie Benutzer, Gerichte und Organisationen.
+
+##### Eintrag DB-Credentials
+
+Die Datenbank-Zugangsdaten müssen in system/config.php eingetragen werden.
+Dort werden typischerweise diese Werte gesetzt:
+Datenbank-Host
+Datenbankname
+Benutzername
+Passwort
+
+
+##### Inbetriebnahme Device
+
+Für die Inbetriebnahme des physischen Artefakts muss das Gerät mit der WebApp bzw. dem Server verbunden werden, damit es Daten an die Datenbank senden oder von dort abrufen kann. In deiner Projektstruktur ist bereits eine Tabelle für Geräte und eine Tabelle für gerätebezogene Bewertungsdaten vorgesehen. Ausserdem wird bei neuen Gerichten mit IDs gearbeitet, damit Bewertungen später einem Gericht zugeordnet werden können.
+
+Das grundsätzliche Vorgehen ist:
+1. Das physische Gerät mit Strom versorgen.
+2. Das Gerät mit dem Netzwerk verbinden, damit es den Webserver erreichen kann.
+3. Das Gerät so konfigurieren, dass es die korrekte Server-URL und die zugehörige Gerätekennung verwendet.
+4. Prüfen, ob das Gerät in der Datenbank als “device” eingetragen ist.
+5. Testweise Daten senden und kontrollieren, ob diese in der Datenbank ankommen.
+
+
+
 #### Bauanleitung Physical Computing (Lorena + Sheyla)
 
 Was muss ich wie bauen, verbinden, installieren?
@@ -130,7 +172,7 @@ YumYum-Feedback/
 │
 └── mc/
 └── terminal/
-└── terminal.ino      # ESP32-C6 Firmware (WLAN-Anbindung, Debounce, Spam-Schutz & HTTP-POST)
+└── terminal.ino              # ESP32-C6 Firmware (WLAN-Anbindung, Debounce, Spam-Schutz & HTTP-POST)
 
 ### Datenschnittstelle (Weg der Daten)
 •⁠  ⁠*Physical Computing:* Ein Kind drückt einen Metall-Taster $\rightarrow$ Der ESP32-C6 validiert den Klick (Entprellung + Spam-Schutz) $\rightarrow$ Der Controller generiert mittels ⁠ Arduino_JSON ⁠ die Payload und sendet einen ⁠ HTTP-POST ⁠-Request mit dem Header ⁠ Content-Type: application/json ⁠ an das Backend.
