@@ -41,7 +41,7 @@ Verständliche Schritt-für-Schritt-Anleitung für Aussenstehende, um das Projek
 
 1.⁠ ⁠Was benötige ich an Infrastruktur? 2. Was muss ich auf meinem Webserver installieren? 3. Wie kann ich die Datenbank importieren? 4. Wo muss ich die DB-Credentials eintragen? 5. … 6. Wie nehme ich das physische Artefakt in Betrieb?
 
-##### Infrastruktur
+#### Infrastruktur
 
 Folgende Infrastruktur wird benötigt:
 •    Ein Webserver oder ein Webhosting mit PHP-Unterstützung, z.B. über Infomaniak
@@ -51,16 +51,16 @@ Folgende Infrastruktur wird benötigt:
 Geeignet ist zum Beispiel ein klassisches Hosting mit PHP 8.0+ oder höher und einer MySQL-Datenbank.
 
 
-##### Installation Webserver
+#### Installation Webserver
 
 Auf dem Webserver müssen PHP und die MySQL-Anbindung für PHP installiert sein, weil die API-Dateien wie  login.php und gericht_erfassen.php die Konfiguration aus  system/config.php  laden und über PDO mit der Datenbank arbeiten.
-Danach das Projekt bzw. Repository auf den Server kopieren und klonen und die Ordnerstruktur beibehalten, weil die App mit Pfaden wie ../system/config.php arbeitet.
+Danach das Projekt bzw. Repository auf den Server kopieren und klonen und die Ordnerstruktur beibehalten.
 
-##### Import Datenbank
+#### Import Datenbank
 
 Die Datenbank kann man mit phpMyAdmin importieren. Im Projekt gibt es laut Struktur eine  system/db.sql, ausserdem existieren einzelne SQL-Dateien für Tabellen wie Benutzer, Gerichte und Organisationen.
 
-##### Eintrag DB-Credentials
+#### Eintrag DB-Credentials
 
 Die Datenbank-Zugangsdaten müssen in system/config.php eingetragen werden.
 Dort werden typischerweise diese Werte gesetzt:
@@ -70,7 +70,7 @@ Benutzername
 Passwort
 
 
-##### Inbetriebnahme Device
+#### Inbetriebnahme Device
 
 Für die Inbetriebnahme des physischen Artefakts muss das Gerät mit der WebApp bzw. dem Server verbunden werden, damit es Daten an die Datenbank senden oder von dort abrufen kann. In deiner Projektstruktur ist bereits eine Tabelle für Geräte und eine Tabelle für gerätebezogene Bewertungsdaten vorgesehen. Ausserdem wird bei neuen Gerichten mit IDs gearbeitet, damit Bewertungen später einem Gericht zugeordnet werden können.
 
@@ -145,7 +145,18 @@ Steckplan
 
 In diesem Abschnitt wird die softwareseitige Architektur, die Datenbeziehung und der genaue Kommunikationsfluss zwischen dem physischen Terminal (Physical Computing) und der Web-App (Backend/Frontend) aufgeschlüsselt.
 
+
+
+
+
 ### Projektstruktur / Code-Struktur
+
+Der Code ist als klassische PHP/JavaScript-Web-Applikation aufgebaut und wird über SFTP auf einem externen Infomaniak-Server deployed. Die Verzeichnisstruktur folgt einer klaren Trennung zwischen Frontend und Backend: Im Ordner `api/` liegen alle serverseitigen PHP-Endpunkte (`login.php`, `logout.php`, `register.php`, `protected.php`, `gerichte.php`, `gericht_erfassen.php`, `woche.php`). JavaScript-Files befinden sich im Ordner `js/`, Stylesheets in `css/` und die Datenbankverbindung sowie Konfiguration in `system/config.php`. Die HTML-Seiten (`index.html`, `login.html`, `register.html`, `protected.html`, `gerichte.html`) liegen im Root-Verzeichnis. Die SFTP-Verbindungskonfiguration für das Deployment via Visual Studio Code ist in `.vscode/sftp.json` hinterlegt.
+
+Als Technologie-Stack kommen HTML, CSS und JavaScript mit der Fetch API im Frontend zum Einsatz. Das Backend basiert auf PHP mit JSON-Responses, die Datenbank auf MariaDB, gehostet bei Infomaniak. Das Deployment erfolgt manuell per SFTP-Extension in Visual Studio Code.
+
+Die Struktur wurde so gewählt, weil sie eine klare Trennung zwischen Frontend (HTML, CSS, JS) und Backend (PHP-API) schafft und damit die Übersicht und Wartbarkeit des Codes vereinfacht. Da jede Seite ein eigenes JavaScript-File besitzt, lassen sich Fehler schnell einem bestimmten Bereich zuordnen, ohne dass man sich durch eine grosse, zusammenhängende Codebasis arbeiten muss.
+
 
 YumYum-Feedback/
 │
@@ -181,3 +192,7 @@ YumYum-Feedback/
 ### Known Bugs
 
 Im ursprünglichen Fritzing-Steckplan (Steckschema.jpeg) wurden die Taster gegen GND verdrahtet und der LED-Ring fälschlicherweise über einen GPIO-Pin gespeist. Beim realen Prototypen-Bau wurde dies korrigiert: Die Taster hängen an 3.3V (wegen INPUT_PULLDOWN) und der LED-Ring wird stabil über den 5V-Pin (VBUS) versorgt.
+
+
+
+
