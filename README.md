@@ -150,7 +150,7 @@ Die Datenbankstruktur wurde im Verlauf des Projekts mehrfach überarbeitet, um t
 ### Initiale Struktur und erstes Problem
 
 Die erste Version sah für die Tabelle `gericht_device_zeit` drei separate Spalten `good`, `neutral` und `bad` als Integer-Zähler vor. Pro Gericht existierte damit eine einzige Zeile, die alle Bewertungen aufsummiert speicherte. Diese Struktur hatte einen entscheidenden Nachteil: Einzelne Bewertungen waren nicht mehr zeitlich rekonstruierbar, nachträgliche Analysen nach Tageszeit oder Zeitraum waren damit unmöglich.
-<img src="assets/datenbank_aufbau.jpeg" alt="datenbank aufbauf" width="500">
+<img src="assets/aufbau_datenbank.jpeg" alt="datenbank aufbau" width="500">
 
 ### Umstieg auf Einzelbewertungen
 
@@ -225,7 +225,7 @@ Für die Installation der WebApp brauchst du einen Webserver mit PHP, eine MySQL
 
 Im ursprünglichen Fritzing-Steckplan (Steckschema.jpeg) wurden die Taster gegen GND verdrahtet und der LED-Ring fälschlicherweise über einen GPIO-Pin gespeist. Beim realen Prototypen-Bau wurde dies korrigiert: Die Taster hängen an 3.3V (wegen INPUT_PULLDOWN) und der LED-Ring wird stabil über den 5V-Pin (VBUS) versorgt.
 
-Bilder werden auf der Website nicht angezeigt
-Einige Bilder konnten auf der Live-Website nicht korrekt dargestellt werden. Die Ursache lag in den Dateipfaden: Die Bilder waren lokal vorhanden, wurden aber beim Upload via SFTP entweder nicht in den korrekten Ordner geladen oder die Pfadangaben im HTML stimmten nicht mit der tatsächlichen Ordnerstruktur auf dem Server überein. Da die Behebung des Problems im verfügbaren Zeitrahmen nicht abgeschlossen werden konnte, wurden die betroffenen Bildstellen im finalen Stand der Website belassen. Eine mögliche Lösung wäre die Überprüfung aller src-Pfade im HTML sowie die Sicherstellung, dass der assets/-Ordner vollständig auf den Server hochgeladen wurde.
+Aus zeitlichen Gründen konnten wir keine Ansicht mehr umsetzen, in der man die Gerichte aus den vergangenen Wochen einsehen kann. Im Dashboard wird derzeit nur die aktuelle Woche angezeigt.
 
+In der Datenbank liegt ein Fehler vor: Die Gerichts-ID wird in der Tabelle gericht_device_zeit nicht der jeweiligen Bewertung zugeordnet. Da jedoch für jedes Gericht ein Datum ausgewählt wird und bei jeder Bewertung ein Timestamp erfasst wird, der ebenfalls ein Datum enthält, können die Gerichte so den jeweiligen Bewertungen am richtigen Tag zugeordnet werden.
 
