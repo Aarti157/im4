@@ -4,11 +4,11 @@ document
   .addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const email = document.getElementById("email").value.trim();
-    const name = document.getElementById("name").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const rollen_id = document.getElementById("rollen_id").value;
-    const orga_id = document.getElementById("orga_id").value;
+    const email     = document.getElementById("email").value.trim();
+    const name      = document.getElementById("name").value.trim();
+    const password  = document.getElementById("password").value.trim();
+    const rollen_id = document.querySelector('input[name="rollen_id"]:checked').value;
+    const orga_id   = document.getElementById("orga_id").value;
 
     try {
       const response = await fetch("api/register.php", {
