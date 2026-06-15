@@ -1,4 +1,27 @@
 // register.js
+
+function updateOrgaField() {
+  const rollen_id = document.querySelector('input[name="rollen_id"]:checked').value;
+  const orgaSelect = document.getElementById("orga_id");
+  const orgaWrap   = document.querySelector(".field-orga");
+
+  if (rollen_id === "1") {
+    orgaSelect.disabled = true;
+    orgaSelect.value    = "";
+    orgaWrap.style.opacity = "0.4";
+    orgaWrap.style.pointerEvents = "none";
+  } else {
+    orgaSelect.disabled = false;
+    orgaWrap.style.opacity = "1";
+    orgaWrap.style.pointerEvents = "auto";
+  }
+}
+
+document.querySelectorAll('input[name="rollen_id"]').forEach(radio => {
+  radio.addEventListener("change", updateOrgaField);
+});
+updateOrgaField();
+
 document
   .getElementById("registerForm")
   .addEventListener("submit", async (e) => {
@@ -8,7 +31,9 @@ document
     const name      = document.getElementById("name").value.trim();
     const password  = document.getElementById("password").value.trim();
     const rollen_id = document.querySelector('input[name="rollen_id"]:checked').value;
-    const orga_id   = document.getElementById("orga_id").value;
+    const orga_id   = document.getElementById("orga_id").disabled
+      ? ""
+      : document.getElementById("orga_id").value;
 
     try {
       const response = await fetch("api/register.php", {
